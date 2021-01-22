@@ -1,5 +1,41 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import Fuse from 'fuse.js'
+import food from './food.json'
+
+const options = {
+  // isCaseSensitive: false,
+  includeScore: true,
+  //shouldSort: false,
+  // includeMatches: false,
+  //findAllMatches: false,
+  // minMatchCharLength: 1,
+  // location: 0,
+  threshold: 0.4,
+  // distance: 100,
+  // useExtendedSearch: false,
+  // ignoreLocation: false,
+  // ignoreFieldNorm: false,
+  keys: ['name', 'Calories'],
+}
+
+const fuse = new Fuse(food, options)
+const pattern = 'ground'
+const pattern2 = 'beef'
+const test = fuse.search(pattern)
+const newArray = test.map((test) => {
+  return {
+    name: test.item.name,
+  }
+})
+const fuse2 = new Fuse(newArray, options)
+
+// Change the pattern
+
+// console.log(fuse2.search(pattern2))
+const input = 'blue cheese milk fat'
+const [first, second, ...rest] = input.split(/[ ,]+/)
+console.log(first)
 
 export default function Home() {
   return (
@@ -10,7 +46,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Whatdidieat</h1>
+        <h1 className={styles.title}>{}</h1>
 
         <p className={styles.description}>
           Get started by editing{' '}
