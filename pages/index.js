@@ -15,7 +15,7 @@ const options = {
   //findAllMatches: false,
   // minMatchCharLength: 1,
   // location: 0,
-  // threshold: 0.3,
+  threshold: 0.4,
   // distance: 100,
   // useExtendedSearch: false,
   // ignoreLocation: false,
@@ -23,7 +23,7 @@ const options = {
   keys: ['name', 'Calories'],
 }
 const fuse = new Fuse(food, options)
-const pattern = 'ground'
+const pattern = 'ground beef'
 const pattern2 = 'beef'
 
 // Change the pattern
@@ -37,7 +37,7 @@ export default function Home() {
   const [searchResults, setSearchResults] = useState(() => {
     return fuse.search(pattern)
   })
-  const searchResultsItems = searchResults.map((searchResults) => {
+  const searchResultsItems = searchResults.map((searchResults, index) => {
     return searchResults.item
   })
   const fuse2 = new Fuse(searchResultsItems, options)
@@ -50,8 +50,21 @@ export default function Home() {
     console.log(value.length)
     if (value.length > 2) {
       const pattern = value
-      const searchFuse = fuse.search(pattern)
-      setSearchResults(searchFuse)
+      const [first, second, ...rest] = pattern.split(/[ ,]+/)
+      const searchFuse = fuse.search(first)
+      const searchFuseItems = searchFuse.map((value) => {
+        return value.item
+      })
+      const fuse2 = new Fuse(searchFuseItems, options)
+      if (second == undefined) {
+        console.log(first)
+        setSearchResults(searchFuse)
+      } else {
+        const searchFuse2 = fuse2.search(second)
+        console.log(second)
+
+        setSearchResults(searchFuse2)
+      }
     }
 
     /*   foodArray = searchFuse.map((value, index) => {
@@ -95,7 +108,7 @@ export default function Home() {
               return
             }
             return (
-              <div className={`grid-item grid-item-animation-${1}`}>
+              <div className={`grid-item grid-item-animation-${1}`} key={index}>
                 {value.name}
                 {value.Calories}
                 {value.Protein}
