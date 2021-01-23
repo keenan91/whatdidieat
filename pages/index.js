@@ -2,7 +2,7 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Fuse from 'fuse.js'
 import food from './food.json'
-
+import globalStyles from '../styles/global.js'
 const options = {
   // isCaseSensitive: false,
   includeScore: true,
@@ -39,61 +39,30 @@ console.log(first)
 
 export default function Home() {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>{first}</h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+    <main>
+      <div class="container">
+        <input> </input>
+      </div>
+      <p className="text-align">Frequently searched foods</p>
+      <div className="grid-container">
+        <div className="grid-item grid-item-animation-1">
+          <a href="./nutrition.html">Grid Item 1</a>
         </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+        <div className="grid-item grid-item-animation-2">Grid Item 2</div>
+        <div className="grid-item grid-item-animation-3">Grid Item 3</div>
+        <div className="grid-item grid-item-animation-4">Grid Item 4</div>
+        <div className="grid-item grid-item-animation-5">Grid Item 5</div>
+        <div className="grid-item grid-item-animation-6">Grid Item 6</div>
+        <div className="grid-item grid-item-animation-7">Grid Item 7</div>
+        <div className="grid-item grid-item-animation-8">Grid Item 8</div>
+        <div className="grid-item grid-item-animation-9">Grid Item 9</div>
+        <div className="grid-item grid-item-animation-10">Grid Item 10</div>
+        <div className="grid-item grid-item-animation-11">Grid Item 11</div>
+        <div className="grid-item grid-item-animation-12">Grid Item 12</div>
+      </div>
+      <style jsx global>
+        {globalStyles}
+      </style>
+    </main>
   )
 }
