@@ -40,9 +40,7 @@ console.log(first)
 export default function Home() {
   return (
     <main>
-      <div class="container">
-        <input> </input>
-      </div>
+      <div class="container"></div>
       <p className="text-align">Frequently searched foods</p>
       <div className="grid-container">
         <div className="grid-item grid-item-animation-1">
