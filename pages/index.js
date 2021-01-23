@@ -6,6 +6,13 @@ import globalStyles from '../styles/global.js'
 import {ChakraProvider} from '@chakra-ui/react'
 import {Input} from '@chakra-ui/input'
 import React, {useState} from 'react'
+import {Box, Flex, Stack, Grid, Wrap, AspectRatio} from '@chakra-ui/layout'
+import {Text} from '@chakra-ui/react'
+import {SimpleGrid} from '@chakra-ui/react'
+import {Center, Square, Circle} from '@chakra-ui/react'
+import {CircularProgress, CircularProgressLabel} from '@chakra-ui/react'
+import {Divider} from '@chakra-ui/react'
+import {Spacer} from '@chakra-ui/react'
 
 const options = {
   // isCaseSensitive: false,
@@ -87,6 +94,8 @@ export default function Home() {
     //   counter++
     // })
   }
+  let dailyValueColor = '#00A3C4'
+  let caloriesCalor = '#6B46C1'
 
   return (
     <ChakraProvider>
@@ -99,8 +108,33 @@ export default function Home() {
             placeholder="Search a Food"
           />
         </div>
-        <p className="text-align">Frequently searched foods</p>
-        <div className="grid-container">
+        <Text
+          align="center"
+          pl="10px"
+          pr="10px"
+          pt="10px"
+          fontSize="4xl"
+          color={caloriesCalor}
+        >
+          Calories Per 100 grams
+        </Text>
+        <Text
+          align="center"
+          pl="10px"
+          pr="10px"
+          pt="10px"
+          pb="10px"
+          fontSize="4xl"
+          color={dailyValueColor}
+        >
+          Daily Values Based on 2000 calories
+        </Text>
+        <SimpleGrid
+          columns={[1, 1, 2, 3, 4, 4]}
+          spacing={10}
+          pl="40px"
+          pr="40px"
+        >
           {searchResultsItems.map((value, index) => {
             itemCounter++
             if (itemCounter > 10) {
@@ -108,14 +142,46 @@ export default function Home() {
               return
             }
             return (
-              <div className={`grid-item grid-item-animation-${1}`} key={index}>
-                {value.name}
-                {value.Calories}
-                {value.Protein}
-              </div>
+              <Box
+                border="1px"
+                bg="#fafafa"
+                color="black"
+                borderColor="#dadce0"
+                h="280px"
+                borderRadius="10px"
+                boxShadow="md"
+                key={index}
+              >
+                <Text align="center" pl="10px" pr="10px" pt="10px">
+                  {value.name}
+                </Text>
+
+                <Center pt="10px">
+                  <CircularProgress
+                    value={(value.Calories / 2000) * 100}
+                    color="green.400"
+                    size="200px"
+                  >
+                    <CircularProgressLabel pl="5px">
+                      <Flex justify="space-around">
+                        <Text pl="30px" fontSize="3xl" color={caloriesCalor}>
+                          {value.Calories}{' '}
+                        </Text>
+                        <Center height="50px">
+                          <Divider orientation="vertical" borderColor="green" />
+                        </Center>
+                        <Text fontSize="3xl" pr="30px" color={dailyValueColor}>
+                          {Math.round((value.Calories / 2000) * 100)}%
+                        </Text>
+                      </Flex>
+                    </CircularProgressLabel>
+                  </CircularProgress>
+                </Center>
+              </Box>
             )
           })}
-        </div>
+        </SimpleGrid>
+        <div className="grid-container"></div>
         <style jsx global>
           {globalStyles}
         </style>
