@@ -3,6 +3,10 @@ import styles from '../styles/Home.module.css'
 import Fuse from 'fuse.js'
 import food from './food.json'
 import globalStyles from '../styles/global.js'
+import {ChakraProvider} from '@chakra-ui/react'
+import {Input} from '@chakra-ui/input'
+import React, {useState} from 'react'
+
 const options = {
   // isCaseSensitive: false,
   includeScore: true,
@@ -11,24 +15,16 @@ const options = {
   //findAllMatches: false,
   // minMatchCharLength: 1,
   // location: 0,
-  threshold: 0.4,
+  // threshold: 0.3,
   // distance: 100,
   // useExtendedSearch: false,
   // ignoreLocation: false,
   // ignoreFieldNorm: false,
   keys: ['name', 'Calories'],
 }
-
 const fuse = new Fuse(food, options)
 const pattern = 'ground'
 const pattern2 = 'beef'
-const test = fuse.search(pattern)
-const newArray = test.map((test) => {
-  return {
-    name: test.item.name,
-  }
-})
-const fuse2 = new Fuse(newArray, options)
 
 // Change the pattern
 
@@ -38,29 +34,79 @@ const [first, second, ...rest] = input.split(/[ ,]+/)
 console.log(first)
 
 export default function Home() {
+  const [searchResults, setSearchResults] = useState(() => {
+    return fuse.search(pattern)
+  })
+  const searchResultsItems = searchResults.map((searchResults) => {
+    return searchResults.item
+  })
+  const fuse2 = new Fuse(searchResultsItems, options)
+  let elements = []
+  let foodArray = []
+  let foodArray2 = Array(100).fill(undefined)
+  let itemCounter = 0
+
+  const inputOnChangeHandler = (value) => {
+    console.log(value.length)
+    if (value.length > 2) {
+      const pattern = value
+      const searchFuse = fuse.search(pattern)
+      setSearchResults(searchFuse)
+    }
+
+    /*   foodArray = searchFuse.map((value, index) => {
+      if (index < 10) {
+        console.log(value.item)
+        return value.item
+      }
+    }) */
+
+    // elements = foodArray.map((value, index) => {
+    //   const counter = 1
+    //   {
+    //     /* <div className={`grid-item grid-item-animation-${counter}`}> */
+    //   }
+    //   return (
+    //     <div className={`grid-item grid-item-animation-${counter}`}>
+    //       Grid Item 1
+    //     </div>
+    //   )
+    //   counter++
+    // })
+  }
+
   return (
-    <main>
-      <div class="container"></div>
-      <p className="text-align">Frequently searched foods</p>
-      <div className="grid-container">
-        <div className="grid-item grid-item-animation-1">
-          <a href="./nutrition.html">Grid Item 1</a>
+    <ChakraProvider>
+      <main>
+        <div className="container">
+          <Input
+            onChange={(e) => {
+              inputOnChangeHandler(e.target.value)
+            }}
+            placeholder="Search a Food"
+          />
         </div>
-        <div className="grid-item grid-item-animation-2">Grid Item 2</div>
-        <div className="grid-item grid-item-animation-3">Grid Item 3</div>
-        <div className="grid-item grid-item-animation-4">Grid Item 4</div>
-        <div className="grid-item grid-item-animation-5">Grid Item 5</div>
-        <div className="grid-item grid-item-animation-6">Grid Item 6</div>
-        <div className="grid-item grid-item-animation-7">Grid Item 7</div>
-        <div className="grid-item grid-item-animation-8">Grid Item 8</div>
-        <div className="grid-item grid-item-animation-9">Grid Item 9</div>
-        <div className="grid-item grid-item-animation-10">Grid Item 10</div>
-        <div className="grid-item grid-item-animation-11">Grid Item 11</div>
-        <div className="grid-item grid-item-animation-12">Grid Item 12</div>
-      </div>
-      <style jsx global>
-        {globalStyles}
-      </style>
-    </main>
+        <p className="text-align">Frequently searched foods</p>
+        <div className="grid-container">
+          {searchResultsItems.map((value, index) => {
+            itemCounter++
+            if (itemCounter > 10) {
+              console.log('itemCounter passed 10')
+              return
+            }
+            return (
+              <div className={`grid-item grid-item-animation-${1}`}>
+                {value.name}
+                {value.Calories}
+                {value.Protein}
+              </div>
+            )
+          })}
+        </div>
+        <style jsx global>
+          {globalStyles}
+        </style>
+      </main>
+    </ChakraProvider>
   )
 }

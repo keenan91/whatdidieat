@@ -14,8 +14,11 @@ export default css.global`
   .container {
     display: flex;
     justify-content: center;
+    padding-top: 40px;
     padding-left: 20px;
     padding-right: 20px;
+    width: 50%;
+    margin: auto;
   }
   .grid-item {
     display: flex;
@@ -119,6 +122,7 @@ export default css.global`
   }
   .text-align {
     text-align: center;
+    padding-top: 40px;
   }
 
   @media only screen and (min-width: 500px) {
