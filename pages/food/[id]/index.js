@@ -1,8 +1,8 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import styles from '../../../styles/Home.module.css'
 import Fuse from 'fuse.js'
-import food from './food.json'
-import globalStyles from '../styles/global.js'
+import food from '../.././food.json'
+import globalStyles from '../../../styles/global.js'
 import {ChakraProvider} from '@chakra-ui/react'
 import {Input} from '@chakra-ui/input'
 import React, {useState, useEffect} from 'react'
@@ -15,7 +15,11 @@ import {Divider} from '@chakra-ui/react'
 import {Spacer} from '@chakra-ui/react'
 import {forwardRef} from '@chakra-ui/react'
 import {motion, isValidMotionProp} from 'framer-motion'
-import Link from 'next/link'
+import {Link} from 'next/link'
+
+async function getServerSideProps({query}) {
+  const {id} = query
+}
 const options = {
   // isCaseSensitive: false,
   includeScore: true,
@@ -167,55 +171,49 @@ export default function Home() {
                   },
                 }}
               >
-                <Link href="/food/[id]" as={`/food/${words}`}>
-                  <Box
-                    border="1px"
-                    bg="#fafafa"
-                    color="black"
-                    borderColor="#dadce0"
-                    h="280px"
-                    borderRadius="10px"
-                    boxShadow="md"
-                    key={index}
-                  >
-                    <Text align="center" pl="10px" pr="10px" pt="10px">
-                      {words}
-                    </Text>
+                <Box
+                  border="1px"
+                  bg="#fafafa"
+                  color="black"
+                  borderColor="#dadce0"
+                  h="280px"
+                  borderRadius="10px"
+                  boxShadow="md"
+                  key={index}
+                >
+                  <Text align="center" pl="10px" pr="10px" pt="10px">
+                    {words}
+                  </Text>
 
-                    <Center pt="10px">
-                      <CircularProgress
-                        color="green.400"
-                        size="200px"
-                        value={(value.Calories / 2000) * 100}
-                      >
-                        <CircularProgressLabel pl="5px">
-                          <Flex justify="space-around">
-                            <Text
-                              pl="30px"
-                              fontSize="3xl"
-                              color={caloriesCalor}
-                            >
-                              {value.Calories}{' '}
-                            </Text>
-                            <Center height="50px">
-                              <Divider
-                                orientation="vertical"
-                                borderColor="green"
-                              />
-                            </Center>
-                            <Text
-                              fontSize="3xl"
-                              pr="30px"
-                              color={dailyValueColor}
-                            >
-                              {Math.round((value.Calories / 2000) * 100)}%
-                            </Text>
-                          </Flex>
-                        </CircularProgressLabel>
-                      </CircularProgress>
-                    </Center>
-                  </Box>
-                </Link>
+                  <Center pt="10px">
+                    <CircularProgress
+                      color="green.400"
+                      size="200px"
+                      value={(value.Calories / 2000) * 100}
+                    >
+                      <CircularProgressLabel pl="5px">
+                        <Flex justify="space-around">
+                          <Text pl="30px" fontSize="3xl" color={caloriesCalor}>
+                            {value.Calories}{' '}
+                          </Text>
+                          <Center height="50px">
+                            <Divider
+                              orientation="vertical"
+                              borderColor="green"
+                            />
+                          </Center>
+                          <Text
+                            fontSize="3xl"
+                            pr="30px"
+                            color={dailyValueColor}
+                          >
+                            {Math.round((value.Calories / 2000) * 100)}%
+                          </Text>
+                        </Flex>
+                      </CircularProgressLabel>
+                    </CircularProgress>
+                  </Center>
+                </Box>
               </motion.div>
             )
           })}
