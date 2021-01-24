@@ -33,13 +33,6 @@ const fuse = new Fuse(food, options)
 const pattern = 'ground beef'
 const pattern2 = 'beef'
 
-// Change the pattern
-
-// console.log(fuse2.search(pattern2))
-const input = 'blue cheese milk fat'
-const [first, second, ...rest] = input.split(/[ ,]+/)
-console.log(first)
-
 export default function Home() {
   const [searchResults, setSearchResults] = useState(() => {
     return fuse.search(pattern)
@@ -48,9 +41,6 @@ export default function Home() {
     return searchResults.item
   })
   const fuse2 = new Fuse(searchResultsItems, options)
-  let elements = []
-  let foodArray = []
-  let foodArray2 = Array(100).fill(undefined)
   let itemCounter = 0
 
   const inputOnChangeHandler = (value) => {
@@ -69,30 +59,9 @@ export default function Home() {
       } else {
         const searchFuse2 = fuse2.search(second)
         console.log(second)
-
         setSearchResults(searchFuse2)
       }
     }
-
-    /*   foodArray = searchFuse.map((value, index) => {
-      if (index < 10) {
-        console.log(value.item)
-        return value.item
-      }
-    }) */
-
-    // elements = foodArray.map((value, index) => {
-    //   const counter = 1
-    //   {
-    //     /* <div className={`grid-item grid-item-animation-${counter}`}> */
-    //   }
-    //   return (
-    //     <div className={`grid-item grid-item-animation-${counter}`}>
-    //       Grid Item 1
-    //     </div>
-    //   )
-    //   counter++
-    // })
   }
   let dailyValueColor = '#00A3C4'
   let caloriesCalor = '#6B46C1'
@@ -137,6 +106,17 @@ export default function Home() {
         >
           {searchResultsItems.map((value, index) => {
             itemCounter++
+            const stringChanged = value.name.replace(/,/g, ' ').toLowerCase()
+            const words = stringChanged.split(' ')
+
+            for (let i = 0; i < words.length; i++) {
+              if (words[i][0] == undefined) {
+              } else {
+                words[i] = words[i][0].toUpperCase() + words[i].substr(1) + ' '
+              }
+            }
+            console.log(words)
+
             if (itemCounter > 10) {
               console.log('itemCounter passed 10')
               return
@@ -153,7 +133,7 @@ export default function Home() {
                 key={index}
               >
                 <Text align="center" pl="10px" pr="10px" pt="10px">
-                  {value.name}
+                  {words}
                 </Text>
 
                 <Center pt="10px">
