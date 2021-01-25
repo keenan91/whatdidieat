@@ -16,6 +16,7 @@ import {Spacer} from '@chakra-ui/react'
 import {forwardRef} from '@chakra-ui/react'
 import {motion, isValidMotionProp} from 'framer-motion'
 import Link from 'next/link'
+import {useRouter} from 'next/router'
 const options = {
   // isCaseSensitive: false,
   includeScore: true,
@@ -127,6 +128,7 @@ export default function Home() {
           pr="40px"
         >
           {searchResultsItems.map((value, index) => {
+            console.log(value)
             itemCounter++
             const stringChanged = value.name.replace(/,/g, ' ').toLowerCase()
             const words = stringChanged.split(' ')
