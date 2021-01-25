@@ -16,33 +16,22 @@ import {Spacer} from '@chakra-ui/react'
 import {forwardRef} from '@chakra-ui/react'
 import {motion, isValidMotionProp} from 'framer-motion'
 import {Link} from 'next/link'
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+} from '@chakra-ui/react'
 
-async function getServerSideProps({query}) {
-  const {id} = query
-}
-const options = {
-  // isCaseSensitive: false,
-  includeScore: true,
-  //shouldSort: false,
-  // includeMatches: false,
-  //findAllMatches: false,
-  // minMatchCharLength: 1,
-  // location: 0,
-  threshold: 0.4,
-  // distance: 100,
-  // useExtendedSearch: false,
-  // ignoreLocation: false,
-  // ignoreFieldNorm: false,
-  keys: ['name', 'Calories'],
-}
-const fuse = new Fuse(food, options)
-const pattern = 'pickles'
-const pattern2 = 'beef'
+function Home({searchResultsItems}) {
+  console.log(searchResultsItems)
+  let id = null
 
-export default function Home() {
-  const [searchResults, setSearchResults] = useState(() => {
-    return fuse.search(pattern)
-  })
+  let itemCounter = 0
 
   const MotionBox = motion.custom(
     forwardRef((props, ref) => {
@@ -54,55 +43,18 @@ export default function Home() {
     }),
   )
 
-  const searchResultsItems = searchResults.map((searchResults, index) => {
-    return searchResults.item
-  })
-  const fuse2 = new Fuse(searchResultsItems, options)
-  let itemCounter = 0
-
-  const inputOnChangeHandler = (value) => {
-    if (value.length > 2) {
-      const pattern = value
-      const [first, second, ...rest] = pattern.split(/[ ,]+/)
-      const searchFuse = fuse.search(first)
-      const searchFuseItems = searchFuse.map((value) => {
-        return value.item
-      })
-      const fuse2 = new Fuse(searchFuseItems, options)
-      if (second == undefined) {
-        //console.log(first)
-        setSearchResults(searchFuse)
-      } else {
-        const searchFuse2 = fuse2.search(second)
-        //console.log(second)
-        setSearchResults(searchFuse2)
-      }
-    }
-  }
-
-  useEffect(() => {
-    setTimeout(() => {
-      inputOnChangeHandler('ground beef')
-      console.log('mission accomplished')
-    }, 500)
-  }, [])
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     inputOnChangeHandler('ground beef')
+  //     console.log('mission accomplished')
+  //   }, 500)
+  // }, [])
   let dailyValueColor = '#00A3C4'
   let caloriesCalor = '#6B46C1'
-  const animationCircularProgressBar = (myCircle) => {
-    console.log(myCircle.current)
-  }
 
   return (
     <ChakraProvider>
-      <main>
-        <div className="container">
-          <Input
-            onChange={(e) => {
-              inputOnChangeHandler(e.target.value)
-            }}
-            placeholder="Search a Food"
-          />
-        </div>
+      <Box>
         <Text
           align="center"
           pl="10px"
@@ -124,105 +76,253 @@ export default function Home() {
         >
           Daily Values Based on 2000 calories
         </Text>
-        <SimpleGrid
-          columns={[1, 1, 2, 3, 4, 4]}
-          spacing={10}
-          pl="40px"
-          pr="40px"
-        >
-          {searchResultsItems.map((value, index) => {
-            itemCounter++
-            const stringChanged = value.name.replace(/,/g, ' ').toLowerCase()
-            const words = stringChanged.split(' ')
+        <SimpleGrid columns={[1, 3, 3]} spacing={10} pl="40px" pr="40px">
+          <motion.div
+            whileHover={{
+              scale: 1.09,
+              transition: {
+                duration: 0.2,
+              },
+            }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {
+                scale: 0.8,
+                opacity: 0,
+              },
+              visible: {
+                scale: 1,
+                opacity: 1,
+                transition: {
+                  delay: 0.4,
+                },
+              },
+            }}
+          >
+            <Box
+              border="1px"
+              bg="#fafafa"
+              color="black"
+              borderColor="#dadce0"
+              h="280px"
+              borderRadius="10px"
+              boxShadow="md"
+            >
+              <Table size="sm">
+                <Thead>
+                  <Tr>
+                    <Th>Nutritional Information</Th>
+                    <Th>Per 100 Grams</Th>
+                    <Th align="center">Daily Value</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  <Tr>
+                    <Td>Calories</Td>
+                    <Td> {searchResultsItems[0].Calories} </Td>
+                    <Td isNumeric>
+                      <CircularProgress
+                        color="green.400"
+                        size="60px"
+                        value="50"
+                        thickness="12px"
+                      >
+                        <CircularProgressLabel pl="5px">
+                          <Flex justify="space-around">
+                            <Text fontSize="md" color={dailyValueColor}>
+                              20%
+                            </Text>
+                          </Flex>
+                        </CircularProgressLabel>
+                      </CircularProgress>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>Protien</Td>
+                    <Td>5g</Td>
+                    <Td isNumeric>
+                      <CircularProgress
+                        color="green.400"
+                        size="60px"
+                        value="50"
+                        thickness="12px"
+                      >
+                        <CircularProgressLabel pl="5px">
+                          <Flex justify="space-around">
+                            <Text fontSize="md" color={dailyValueColor}>
+                              20%
+                            </Text>
+                          </Flex>
+                        </CircularProgressLabel>
+                      </CircularProgress>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>yards</Td>
+                    <Td>metres (m)</Td>
+                    <Td isNumeric>0.91444</Td>
+                  </Tr>
+                </Tbody>
+                <Tfoot>
+                  <Tr>
+                    <Th>To convert</Th>
+                    <Th>into</Th>
+                    <Th isNumeric>multiply by</Th>
+                  </Tr>
+                </Tfoot>
+              </Table>
 
-            for (let i = 0; i < words.length; i++) {
-              if (words[i][0] == undefined) {
-              } else {
-                words[i] = words[i][0].toUpperCase() + words[i].substr(1) + ' '
-              }
-            }
-            //console.log(words)
+              <Text align="center" pl="10px" pr="10px" pt="10px">
+                hello
+              </Text>
+            </Box>
+          </motion.div>
 
-            if (itemCounter > 10) {
-              // console.log('itemCounter passed 10')
-              return
-            }
-            return (
-              <motion.div
-                whileHover={{
-                  scale: 1.09,
-                  transition: {
-                    duration: 0.2,
-                  },
-                }}
-                initial="hidden"
-                animate="visible"
-                variants={{
-                  hidden: {
-                    scale: 0.8,
-                    opacity: 0,
-                  },
-                  visible: {
-                    scale: 1,
-                    opacity: 1,
-                    transition: {
-                      delay: 0.4,
-                    },
-                  },
-                }}
-              >
-                <Box
-                  border="1px"
-                  bg="#fafafa"
-                  color="black"
-                  borderColor="#dadce0"
-                  h="280px"
-                  borderRadius="10px"
-                  boxShadow="md"
-                  key={index}
-                >
-                  <Text align="center" pl="10px" pr="10px" pt="10px">
-                    {words}
-                  </Text>
+          <motion.div
+            whileHover={{
+              scale: 1.09,
+              transition: {
+                duration: 0.2,
+              },
+            }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {
+                scale: 0.8,
+                opacity: 0,
+              },
+              visible: {
+                scale: 1,
+                opacity: 1,
+                transition: {
+                  delay: 0.4,
+                },
+              },
+            }}
+          >
+            <Box
+              border="1px"
+              bg="#fafafa"
+              color="black"
+              borderColor="#dadce0"
+              h="280px"
+              borderRadius="10px"
+              boxShadow="md"
+            >
+              <Text align="center" pl="10px" pr="10px" pt="10px">
+                hello
+              </Text>
 
-                  <Center pt="10px">
-                    <CircularProgress
-                      color="green.400"
-                      size="200px"
-                      value={(value.Calories / 2000) * 100}
-                    >
-                      <CircularProgressLabel pl="5px">
-                        <Flex justify="space-around">
-                          <Text pl="30px" fontSize="3xl" color={caloriesCalor}>
-                            {value.Calories}{' '}
-                          </Text>
-                          <Center height="50px">
-                            <Divider
-                              orientation="vertical"
-                              borderColor="green"
-                            />
-                          </Center>
-                          <Text
-                            fontSize="3xl"
-                            pr="30px"
-                            color={dailyValueColor}
-                          >
-                            {Math.round((value.Calories / 2000) * 100)}%
-                          </Text>
-                        </Flex>
-                      </CircularProgressLabel>
-                    </CircularProgress>
-                  </Center>
-                </Box>
-              </motion.div>
-            )
-          })}
+              <Center pt="10px">
+                <CircularProgress color="green.400" size="60px" value="50">
+                  <CircularProgressLabel pl="5px">
+                    <Flex justify="space-around">
+                      <Text pl="30px" fontSize="3xl" color={caloriesCalor}>
+                        200
+                      </Text>
+                      <Center height="50px">
+                        <Divider orientation="vertical" borderColor="green" />
+                      </Center>
+                      <Text fontSize="3xl" pr="30px" color={dailyValueColor}>
+                        20%
+                      </Text>
+                    </Flex>
+                  </CircularProgressLabel>
+                </CircularProgress>
+              </Center>
+            </Box>
+          </motion.div>
+
+          <motion.div
+            whileHover={{
+              scale: 1.09,
+              transition: {
+                duration: 0.2,
+              },
+            }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {
+                scale: 0.8,
+                opacity: 0,
+              },
+              visible: {
+                scale: 1,
+                opacity: 1,
+                transition: {
+                  delay: 0.4,
+                },
+              },
+            }}
+          >
+            <Box
+              border="1px"
+              bg="#fafafa"
+              color="black"
+              borderColor="#dadce0"
+              h="280px"
+              borderRadius="10px"
+              boxShadow="md"
+            >
+              <Text align="center" pl="10px" pr="10px" pt="10px">
+                hello
+              </Text>
+
+              <Center pt="10px">
+                <CircularProgress color="green.400" size="60px" value="50">
+                  <CircularProgressLabel pl="5px">
+                    <Flex justify="space-around">
+                      <Text pl="30px" fontSize="3xl" color={caloriesCalor}>
+                        200
+                      </Text>
+                      <Center height="50px">
+                        <Divider orientation="vertical" borderColor="green" />
+                      </Center>
+                      <Text fontSize="3xl" pr="30px" color={dailyValueColor}>
+                        20%
+                      </Text>
+                    </Flex>
+                  </CircularProgressLabel>
+                </CircularProgress>
+              </Center>
+            </Box>
+          </motion.div>
         </SimpleGrid>
-        <div className="grid-container"></div>
         <style jsx global>
           {globalStyles}
         </style>
-      </main>
+      </Box>
     </ChakraProvider>
   )
 }
+
+export async function getServerSideProps({query}) {
+  const {id} = query
+  const options = {
+    // isCaseSensitive: false,
+    includeScore: true,
+    //shouldSort: false,
+    // includeMatches: false,
+    //findAllMatches: false,
+    // minMatchCharLength: 1,
+    // location: 0,
+    threshold: 0.4,
+    // distance: 100,
+    // useExtendedSearch: false,
+    // ignoreLocation: false,
+    // ignoreFieldNorm: false,
+    keys: ['name', 'Calories'],
+  }
+  const fuse = new Fuse(food, options)
+  const searchResults = fuse.search(id)
+  const searchResultsItems = searchResults.map((searchResults, index) => {
+    return searchResults.item
+  })
+  return {
+    props: {searchResultsItems},
+  }
+}
+export default Home
