@@ -28,7 +28,83 @@ import {
 } from '@chakra-ui/react'
 
 function Home({searchResultsItems}) {
-  console.log(searchResultsItems)
+  const {
+    AlphaCarot,
+    BetaCarot,
+    BetaCrypt,
+    Calcium,
+    Calories,
+    Carbohydrt,
+    Cholestrl,
+    CholineTot,
+    FAMono,
+    FAPoly,
+    fatPoly,
+    FASat,
+    Fiber,
+    FolateDFE,
+    FolateTot,
+    FolicAcid,
+    FoodFolate,
+    Iron,
+    LipidTot,
+    Lycopene,
+    Magnesium,
+    Manganese,
+    Niacin,
+    PantoAcid,
+    Phosphorus,
+    Potassium,
+    Protein,
+    Retinol,
+    Riboflavin,
+    Selenium,
+    Sodium,
+    Sugar,
+    Thiamin,
+    VitAIU,
+    VitARAE,
+    VitB6,
+    VitB12,
+    VitC,
+    VitD,
+    VitDIU,
+    VitE,
+    VitK,
+    Zinc,
+    name,
+  } = searchResultsItems[0]
+  console.log(searchResultsItems[0])
+
+  const dailyValueCalculation = (nutritionType, dailyValue) => {
+    return Math.round((nutritionType / dailyValue) * 100)
+  }
+
+  const createRowContents = (nutritionType, dailyValue, title) => {
+    return (
+      <Tr>
+        <Td>{title}</Td>
+        <Td> {nutritionType} </Td>
+        <Td isNumeric>
+          <CircularProgress
+            color="green.400"
+            size="65px"
+            value={Math.round((nutritionType / dailyValue) * 100)}
+            thickness="12px"
+          >
+            <CircularProgressLabel pl="5px">
+              <Flex justify="space-around">
+                <Text fontSize="xl" color={dailyValueColor}>
+                  {Math.round((nutritionType / dailyValue) * 100)}%
+                </Text>
+              </Flex>
+            </CircularProgressLabel>
+          </CircularProgress>
+        </Td>
+      </Tr>
+    )
+  }
+
   let id = null
 
   let itemCounter = 0
@@ -54,28 +130,7 @@ function Home({searchResultsItems}) {
 
   return (
     <ChakraProvider>
-      <Box>
-        <Text
-          align="center"
-          pl="10px"
-          pr="10px"
-          pt="10px"
-          fontSize="4xl"
-          color={caloriesCalor}
-        >
-          Calories Per 100 grams
-        </Text>
-        <Text
-          align="center"
-          pl="10px"
-          pr="10px"
-          pt="10px"
-          pb="10px"
-          fontSize="4xl"
-          color={dailyValueColor}
-        >
-          Daily Values Based on 2000 calories
-        </Text>
+      <Box pt="20px">
         <SimpleGrid columns={[1, 3, 3]} spacing={10} pl="40px" pr="40px">
           <motion.div
             whileHover={{
@@ -105,7 +160,6 @@ function Home({searchResultsItems}) {
               bg="#fafafa"
               color="black"
               borderColor="#dadce0"
-              h="280px"
               borderRadius="10px"
               boxShadow="md"
             >
@@ -118,64 +172,24 @@ function Home({searchResultsItems}) {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  <Tr>
-                    <Td>Calories</Td>
-                    <Td> {searchResultsItems[0].Calories} </Td>
-                    <Td isNumeric>
-                      <CircularProgress
-                        color="green.400"
-                        size="60px"
-                        value="50"
-                        thickness="12px"
-                      >
-                        <CircularProgressLabel pl="5px">
-                          <Flex justify="space-around">
-                            <Text fontSize="md" color={dailyValueColor}>
-                              20%
-                            </Text>
-                          </Flex>
-                        </CircularProgressLabel>
-                      </CircularProgress>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>Protien</Td>
-                    <Td>5g</Td>
-                    <Td isNumeric>
-                      <CircularProgress
-                        color="green.400"
-                        size="60px"
-                        value="50"
-                        thickness="12px"
-                      >
-                        <CircularProgressLabel pl="5px">
-                          <Flex justify="space-around">
-                            <Text fontSize="md" color={dailyValueColor}>
-                              20%
-                            </Text>
-                          </Flex>
-                        </CircularProgressLabel>
-                      </CircularProgress>
-                    </Td>
-                  </Tr>
+                  {createRowContents(Calories, 2000, 'Calories')}
+                  {createRowContents(LipidTot, 70, 'Total Fat')}
+                  {createRowContents(FASat, 70, 'Saturated Fat')}
+                  {createRowContents(FAMono, 70, 'MonoSaturated Fat')}
+                  {createRowContents(FAPoly, 70, 'Polysaturated Fat')}
+                  {createRowContents(Cholestrl, 70, 'Cholestrl')}
+                  {createRowContents(Sodium, 70, 'Sodium')}
+                  {createRowContents(Carbohydrt, 70, 'Carbohydrt')}
+                  {createRowContents(Sugar, 70, 'Sugar')}
+                  {createRowContents(Fiber, 70, 'Fiber')}
+                  {createRowContents(Protein, 70, 'Protein')}
                   <Tr>
                     <Td>yards</Td>
                     <Td>metres (m)</Td>
                     <Td isNumeric>0.91444</Td>
                   </Tr>
                 </Tbody>
-                <Tfoot>
-                  <Tr>
-                    <Th>To convert</Th>
-                    <Th>into</Th>
-                    <Th isNumeric>multiply by</Th>
-                  </Tr>
-                </Tfoot>
               </Table>
-
-              <Text align="center" pl="10px" pr="10px" pt="10px">
-                hello
-              </Text>
             </Box>
           </motion.div>
 
