@@ -5,7 +5,7 @@ import food from '../.././food.json'
 import globalStyles from '../../../styles/global.js'
 import {ChakraProvider} from '@chakra-ui/react'
 import {Input} from '@chakra-ui/input'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {Box, Flex, Stack, Grid, Wrap, AspectRatio} from '@chakra-ui/layout'
 import {Text} from '@chakra-ui/react'
 import {SimpleGrid} from '@chakra-ui/react'
@@ -16,6 +16,8 @@ import {Spacer} from '@chakra-ui/react'
 import {forwardRef} from '@chakra-ui/react'
 import {motion, isValidMotionProp} from 'framer-motion'
 import {Link} from 'next/link'
+import ReactDOM from 'react-dom'
+import Swipe from 'react-easy-swipe'
 import {
   Table,
   Thead,
@@ -28,6 +30,26 @@ import {
 } from '@chakra-ui/react'
 
 function Home({searchResultsItems}) {
+  const nutritionTouched = useRef()
+  const onSwipeStart = (event) => {
+    console.log('Start swiping...', event)
+  }
+
+  const onSwipeMove = (position, event) => {
+    if (position.x < -165) {
+      setSwipeAnimation({
+        vitamin: 'swipeEnd',
+        mineral: 'swipeStart',
+        nutrition: 'offScreen',
+      })
+    }
+    console.log(`Moved ${position.x} pixels horizontally`, event)
+    console.log(`Moved ${position.y} pixels vertically`, event)
+  }
+
+  const onSwipeEnd = (event) => {
+    console.log('End swiping...', event)
+  }
   const {
     AlphaCarot,
     BetaCarot,
@@ -76,8 +98,13 @@ function Home({searchResultsItems}) {
     name,
   } = searchResultsItems[0]
   console.log(searchResultsItems[0])
+  const [swipeAnimation, setSwipeAnimation] = useState({
+    vitamin: 'visible',
+    mineral: 'offScreen',
+    nutrition: 'offScreen',
+  })
 
-  const createBox = (arrayOfRowData) => {
+  const createBox = (arrayOfRowData, ref, animationIntial, boxName) => {
     const element = arrayOfRowData.map((value, index) => {
       return createRowContents(value.Calories, value.dailyValue, value.title)
     })
@@ -90,19 +117,39 @@ function Home({searchResultsItems}) {
             duration: 0.2,
           },
         }}
-        initial="hidden"
-        animate="visible"
+        initial={animationIntial}
+        animate={boxName}
         variants={{
           hidden: {
+            position: 'absolute',
             scale: 0.8,
             opacity: 0,
           },
+          offScreen: {
+            position: 'abolute',
+            x: 1000,
+          },
           visible: {
+            position: 'absolute',
             scale: 1,
             opacity: 1,
             transition: {
               delay: 0.4,
             },
+          },
+          swipeStart: {
+            position: 'absolute',
+            x: 0,
+            scale: 1,
+            opacity: 1,
+            transition: {ease: 'easeOut', duration: 2},
+          },
+          swipeEnd: {
+            position: 'absolute',
+            x: -2000,
+            scale: 1,
+            opacity: 1,
+            transition: {ease: 'easeOut', duration: 2},
           },
         }}
       >
@@ -113,6 +160,7 @@ function Home({searchResultsItems}) {
           borderColor="#dadce0"
           borderRadius="10px"
           boxShadow="md"
+          ref={ref}
         >
           <Table size="sm">
             <Thead>
@@ -221,14 +269,25 @@ function Home({searchResultsItems}) {
           {name}
         </Text>
         <SimpleGrid
-          columns={[1, 3, 3]}
+          columns={[0, 1, 1]}
           spacing={10}
           pl={['40px', '40px', '220px']}
           pr={['40px', '40px', '220px']}
         >
-          {createBox(nutritionBox)}
-          {createBox(mineralBox)}
-          {createBox(vitaminBox)}
+          <Swipe
+            onSwipeStart={onSwipeStart}
+            onSwipeMove={onSwipeMove}
+            onSwipeEnd={onSwipeEnd}
+          >
+            {createBox(vitaminBox, null, 'hidden', swipeAnimation.vitamin)}
+          </Swipe>
+          {createBox(
+            nutritionBox,
+            nutritionTouched,
+            'offScreen',
+            swipeAnimation.nutrition,
+          )}
+          {createBox(mineralBox, null, 'offScreen', swipeAnimation.mineral)}
         </SimpleGrid>
         <style jsx global>
           {globalStyles}
