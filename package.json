@@ -16,6 +16,8 @@
     "next": "10.0.5",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "react-easy-swipe": "0.0.21"
+    "react-easy-swipe": "0.0.21",
+    "sass": "^1.32.5",
+    "swiper": "^6.4.8"
   }
 }

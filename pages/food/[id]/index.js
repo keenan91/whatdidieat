@@ -18,6 +18,9 @@ import {motion, isValidMotionProp} from 'framer-motion'
 import {Link} from 'next/link'
 import ReactDOM from 'react-dom'
 import Swipe from 'react-easy-swipe'
+import {Swiper, SwiperSlide} from 'swiper/react'
+import SwiperCore, {Navigation, Pagination} from 'swiper'
+
 import {
   Table,
   Thead,
@@ -28,6 +31,16 @@ import {
   Td,
   TableCaption,
 } from '@chakra-ui/react'
+
+SwiperCore.use([Navigation, Pagination])
+/* const slides = []
+for (let i = 0; i < 5; i += 1) {
+  slides.push(
+    <SwiperSlide key={`slide-${i}`}>
+      {createBox(vitaminBox, null, 'hidden', swipeAnimation.vitamin)}
+    </SwiperSlide>,
+  )
+} */
 
 function Home({searchResultsItems}) {
   const nutritionTouched = useRef()
@@ -117,20 +130,17 @@ function Home({searchResultsItems}) {
             duration: 0.2,
           },
         }}
-        initial={animationIntial}
-        animate={boxName}
+        initial="hidden"
+        animate="visible"
         variants={{
           hidden: {
-            position: 'absolute',
             scale: 0.8,
             opacity: 0,
           },
           offScreen: {
-            position: 'abolute',
             x: 1000,
           },
           visible: {
-            position: 'absolute',
             scale: 1,
             opacity: 1,
             transition: {
@@ -138,14 +148,12 @@ function Home({searchResultsItems}) {
             },
           },
           swipeStart: {
-            position: 'absolute',
             x: 0,
             scale: 1,
             opacity: 1,
             transition: {ease: 'easeOut', duration: 2},
           },
           swipeEnd: {
-            position: 'absolute',
             x: -2000,
             scale: 1,
             opacity: 1,
@@ -268,27 +276,33 @@ function Home({searchResultsItems}) {
         <Text align="center" pb="30px">
           {name}
         </Text>
-        <SimpleGrid
-          columns={[0, 1, 1]}
-          spacing={10}
-          pl={['40px', '40px', '220px']}
-          pr={['40px', '40px', '220px']}
+
+        <Swiper
+          initialSlide="0"
+          spaceBetween={50}
+          slidesPerView={1}
+          onSlideChange={() => console.log('slide change')}
+          onSwiper={(swiper) => console.log(swiper)}
+          navigation
+          pagination={{clickable: true}}
         >
-          <Swipe
-            onSwipeStart={onSwipeStart}
-            onSwipeMove={onSwipeMove}
-            onSwipeEnd={onSwipeEnd}
-          >
+          <SwiperSlide>
             {createBox(vitaminBox, null, 'hidden', swipeAnimation.vitamin)}
-          </Swipe>
-          {createBox(
-            nutritionBox,
-            nutritionTouched,
-            'offScreen',
-            swipeAnimation.nutrition,
-          )}
-          {createBox(mineralBox, null, 'offScreen', swipeAnimation.mineral)}
-        </SimpleGrid>
+          </SwiperSlide>
+          <SwiperSlide>
+            {' '}
+            {createBox(
+              nutritionBox,
+              nutritionTouched,
+              'hidden',
+              swipeAnimation.nutrition,
+            )}
+          </SwiperSlide>
+          <SwiperSlide>
+            {createBox(mineralBox, null, 'hidden', swipeAnimation.mineral)}
+          </SwiperSlide>
+        </Swiper>
+
         <style jsx global>
           {globalStyles}
         </style>
