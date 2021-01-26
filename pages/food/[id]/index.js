@@ -28,7 +28,132 @@ import {
 } from '@chakra-ui/react'
 
 function Home({searchResultsItems}) {
-  console.log(searchResultsItems)
+  const {
+    AlphaCarot,
+    BetaCarot,
+    BetaCrypt,
+    Calcium,
+    Calories,
+    Carbohydrt,
+    Cholestrl,
+    CholineTot,
+    Copper,
+    FAMono,
+    FAPoly,
+    fatPoly,
+    FASat,
+    Fiber,
+    FolateDFE,
+    FolateTot,
+    FolicAcid,
+    FoodFolate,
+    Iron,
+    LipidTot,
+    Lycopene,
+    Magnesium,
+    Manganese,
+    Niacin,
+    PantoAcid,
+    Phosphorus,
+    Potassium,
+    Protein,
+    Retinol,
+    Riboflavin,
+    Selenium,
+    Sodium,
+    Sugar,
+    Thiamin,
+    VitAIU,
+    VitARAE,
+    VitB6,
+    VitB12,
+    VitC,
+    VitD,
+    VitDIU,
+    VitE,
+    VitK,
+    Zinc,
+    name,
+  } = searchResultsItems[0]
+  console.log(searchResultsItems[0])
+
+  const createBox = (arrayOfRowData) => {
+    const element = arrayOfRowData.map((value, index) => {
+      return createRowContents(value.Calories, value.dailyValue, value.title)
+    })
+
+    return (
+      <motion.div
+        whileHover={{
+          scale: 1.09,
+          transition: {
+            duration: 0.2,
+          },
+        }}
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {
+            scale: 0.8,
+            opacity: 0,
+          },
+          visible: {
+            scale: 1,
+            opacity: 1,
+            transition: {
+              delay: 0.4,
+            },
+          },
+        }}
+      >
+        <Box
+          border="1px"
+          bg="#fafafa"
+          color="black"
+          borderColor="#dadce0"
+          borderRadius="10px"
+          boxShadow="md"
+        >
+          <Table size="sm">
+            <Thead>
+              <Tr>
+                <Th>Nutritional Information</Th>
+                <Th>Per 100 Grams</Th>
+                <Th align="center">Daily Value</Th>
+              </Tr>
+            </Thead>
+            <Tbody>{element}</Tbody>
+          </Table>
+        </Box>
+      </motion.div>
+    )
+  }
+
+  const createRowContents = (nutritionType, dailyValue, title) => {
+    return (
+      <Tr>
+        <Td>{title}</Td>
+        <Td> {nutritionType} </Td>
+        <Td isNumeric>
+          <CircularProgress
+            color="green.400"
+            size="65px"
+            value={Math.round((nutritionType / dailyValue) * 100)}
+            thickness="12px"
+          >
+            <CircularProgressLabel pl="5px">
+              <Flex justify="space-around">
+                <Text fontSize="xl" color={dailyValueColor}>
+                  {Math.round((nutritionType / dailyValue) * 100)}%
+                </Text>
+              </Flex>
+            </CircularProgressLabel>
+          </CircularProgress>
+        </Td>
+      </Tr>
+    )
+  }
+
   let id = null
 
   let itemCounter = 0
@@ -51,245 +176,59 @@ function Home({searchResultsItems}) {
   // }, [])
   let dailyValueColor = '#00A3C4'
   let caloriesCalor = '#6B46C1'
+  let nutritionBox = [
+    {Calories: Calories, dailyValue: 2000, title: 'Calories'},
+    {Calories: LipidTot, dailyValue: 78, title: 'Total Fat'},
+    {Calories: FASat, dailyValue: 20, title: 'Saturated Fat'},
+    {Calories: FAMono, dailyValue: 2000, title: 'Monosaturated Fat'},
+    {Calories: FAPoly, dailyValue: 2000, title: 'Polysaturated Fat'},
+    {Calories: Sodium, dailyValue: 2300, title: 'Sodium'},
+    {Calories: Carbohydrt, dailyValue: 275, title: 'Carbohydrt'},
+    {Calories: Sugar, dailyValue: 2000, title: 'Sugar'},
+    {Calories: Protein, dailyValue: 50, title: 'Protein'},
+  ]
 
+  let mineralBox = [
+    {Calories: Calcium, dailyValue: 1300, title: 'Calcium'},
+    {Calories: Copper, dailyValue: 0.9, title: 'Copper'},
+    {Calories: Iron, dailyValue: 18, title: 'Iron'},
+    {Calories: Magnesium, dailyValue: 420, title: 'Magnesium'},
+    {Calories: Phosphorus, dailyValue: 1250, title: 'Phosphorus'},
+    {Calories: Potassium, dailyValue: 4700, title: 'Potassium'},
+    {Calories: Sodium, dailyValue: 2300, title: 'Sodium'},
+    {Calories: Selenium, dailyValue: 55, title: 'Selenium'},
+    {Calories: Zinc, dailyValue: 11, title: 'Zinc'},
+  ]
+  let vitaminBox = [
+    {Calories: VitAIU, dailyValue: 5000, title: 'Vitamin A'},
+    {Calories: VitC, dailyValue: 90, title: 'Vitamin C'},
+    {Calories: VitDIU, dailyValue: 400, title: 'Vitamin D'},
+    {Calories: VitE, dailyValue: 30, title: 'Vitamin E'},
+    {Calories: VitK, dailyValue: 120, title: 'Vitamin K'},
+    {Calories: Thiamin, dailyValue: 1.2, title: 'Thiamin'},
+    {Calories: Riboflavin, dailyValue: 1.3, title: 'RiboFlavin'},
+    {Calories: Niacin, dailyValue: 20, title: 'Niacin'},
+    {Calories: VitB6, dailyValue: 2, title: 'Vitamin B6'},
+    {Calories: FolicAcid, dailyValue: 400, title: 'Folate'},
+    {Calories: VitB12, dailyValue: 6, title: 'Vitamin B12'},
+    {Calories: PantoAcid, dailyValue: 10, title: 'Pantothenic Acid'},
+    {Calories: CholineTot, dailyValue: 550, title: 'Choline'},
+  ]
   return (
     <ChakraProvider>
-      <Box>
-        <Text
-          align="center"
-          pl="10px"
-          pr="10px"
-          pt="10px"
-          fontSize="4xl"
-          color={caloriesCalor}
-        >
-          Calories Per 100 grams
+      <Box pt="20px">
+        <Text align="center" pb="30px">
+          {name}
         </Text>
-        <Text
-          align="center"
-          pl="10px"
-          pr="10px"
-          pt="10px"
-          pb="10px"
-          fontSize="4xl"
-          color={dailyValueColor}
+        <SimpleGrid
+          columns={[1, 3, 3]}
+          spacing={10}
+          pl={['40px', '40px', '220px']}
+          pr={['40px', '40px', '220px']}
         >
-          Daily Values Based on 2000 calories
-        </Text>
-        <SimpleGrid columns={[1, 3, 3]} spacing={10} pl="40px" pr="40px">
-          <motion.div
-            whileHover={{
-              scale: 1.09,
-              transition: {
-                duration: 0.2,
-              },
-            }}
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: {
-                scale: 0.8,
-                opacity: 0,
-              },
-              visible: {
-                scale: 1,
-                opacity: 1,
-                transition: {
-                  delay: 0.4,
-                },
-              },
-            }}
-          >
-            <Box
-              border="1px"
-              bg="#fafafa"
-              color="black"
-              borderColor="#dadce0"
-              h="280px"
-              borderRadius="10px"
-              boxShadow="md"
-            >
-              <Table size="sm">
-                <Thead>
-                  <Tr>
-                    <Th>Nutritional Information</Th>
-                    <Th>Per 100 Grams</Th>
-                    <Th align="center">Daily Value</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  <Tr>
-                    <Td>Calories</Td>
-                    <Td> {searchResultsItems[0].Calories} </Td>
-                    <Td isNumeric>
-                      <CircularProgress
-                        color="green.400"
-                        size="60px"
-                        value="50"
-                        thickness="12px"
-                      >
-                        <CircularProgressLabel pl="5px">
-                          <Flex justify="space-around">
-                            <Text fontSize="md" color={dailyValueColor}>
-                              20%
-                            </Text>
-                          </Flex>
-                        </CircularProgressLabel>
-                      </CircularProgress>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>Protien</Td>
-                    <Td>5g</Td>
-                    <Td isNumeric>
-                      <CircularProgress
-                        color="green.400"
-                        size="60px"
-                        value="50"
-                        thickness="12px"
-                      >
-                        <CircularProgressLabel pl="5px">
-                          <Flex justify="space-around">
-                            <Text fontSize="md" color={dailyValueColor}>
-                              20%
-                            </Text>
-                          </Flex>
-                        </CircularProgressLabel>
-                      </CircularProgress>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>yards</Td>
-                    <Td>metres (m)</Td>
-                    <Td isNumeric>0.91444</Td>
-                  </Tr>
-                </Tbody>
-                <Tfoot>
-                  <Tr>
-                    <Th>To convert</Th>
-                    <Th>into</Th>
-                    <Th isNumeric>multiply by</Th>
-                  </Tr>
-                </Tfoot>
-              </Table>
-
-              <Text align="center" pl="10px" pr="10px" pt="10px">
-                hello
-              </Text>
-            </Box>
-          </motion.div>
-
-          <motion.div
-            whileHover={{
-              scale: 1.09,
-              transition: {
-                duration: 0.2,
-              },
-            }}
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: {
-                scale: 0.8,
-                opacity: 0,
-              },
-              visible: {
-                scale: 1,
-                opacity: 1,
-                transition: {
-                  delay: 0.4,
-                },
-              },
-            }}
-          >
-            <Box
-              border="1px"
-              bg="#fafafa"
-              color="black"
-              borderColor="#dadce0"
-              h="280px"
-              borderRadius="10px"
-              boxShadow="md"
-            >
-              <Text align="center" pl="10px" pr="10px" pt="10px">
-                hello
-              </Text>
-
-              <Center pt="10px">
-                <CircularProgress color="green.400" size="60px" value="50">
-                  <CircularProgressLabel pl="5px">
-                    <Flex justify="space-around">
-                      <Text pl="30px" fontSize="3xl" color={caloriesCalor}>
-                        200
-                      </Text>
-                      <Center height="50px">
-                        <Divider orientation="vertical" borderColor="green" />
-                      </Center>
-                      <Text fontSize="3xl" pr="30px" color={dailyValueColor}>
-                        20%
-                      </Text>
-                    </Flex>
-                  </CircularProgressLabel>
-                </CircularProgress>
-              </Center>
-            </Box>
-          </motion.div>
-
-          <motion.div
-            whileHover={{
-              scale: 1.09,
-              transition: {
-                duration: 0.2,
-              },
-            }}
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: {
-                scale: 0.8,
-                opacity: 0,
-              },
-              visible: {
-                scale: 1,
-                opacity: 1,
-                transition: {
-                  delay: 0.4,
-                },
-              },
-            }}
-          >
-            <Box
-              border="1px"
-              bg="#fafafa"
-              color="black"
-              borderColor="#dadce0"
-              h="280px"
-              borderRadius="10px"
-              boxShadow="md"
-            >
-              <Text align="center" pl="10px" pr="10px" pt="10px">
-                hello
-              </Text>
-
-              <Center pt="10px">
-                <CircularProgress color="green.400" size="60px" value="50">
-                  <CircularProgressLabel pl="5px">
-                    <Flex justify="space-around">
-                      <Text pl="30px" fontSize="3xl" color={caloriesCalor}>
-                        200
-                      </Text>
-                      <Center height="50px">
-                        <Divider orientation="vertical" borderColor="green" />
-                      </Center>
-                      <Text fontSize="3xl" pr="30px" color={dailyValueColor}>
-                        20%
-                      </Text>
-                    </Flex>
-                  </CircularProgressLabel>
-                </CircularProgress>
-              </Center>
-            </Box>
-          </motion.div>
+          {createBox(nutritionBox)}
+          {createBox(mineralBox)}
+          {createBox(vitaminBox)}
         </SimpleGrid>
         <style jsx global>
           {globalStyles}
