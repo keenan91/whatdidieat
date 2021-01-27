@@ -296,31 +296,33 @@ function Home({searchResultsItems}) {
           </SimpleGrid>
         </BrowserView>
         <MobileView>
-          <Swiper
-            initialSlide="0"
-            spaceBetween={50}
-            slidesPerView={1}
-            onSlideChange={() => console.log('slide change')}
-            onSwiper={(swiper) => console.log(swiper)}
-            navigation
-            pagination={{clickable: true}}
-          >
-            <SwiperSlide w={['80%']} m="auto">
-              {createBox(vitaminBox, null, 'hidden', swipeAnimation.vitamin)}
-            </SwiperSlide>
-            <SwiperSlide w={['80%']} m="auto">
-              {' '}
-              {createBox(
-                nutritionBox,
-                nutritionTouched,
-                'hidden',
-                swipeAnimation.nutrition,
-              )}
-            </SwiperSlide>
-            <SwiperSlide w={['80%']} m="auto">
-              {createBox(mineralBox, null, 'hidden', swipeAnimation.mineral)}
-            </SwiperSlide>
-          </Swiper>
+          <Box w={['80%']} m="auto">
+            <Swiper
+              initialSlide="0"
+              spaceBetween={50}
+              slidesPerView={1}
+              onSlideChange={() => console.log('slide change')}
+              onSwiper={(swiper) => console.log(swiper)}
+              navigation
+              pagination={{clickable: true}}
+            >
+              <SwiperSlide>
+                {createBox(vitaminBox, null, 'hidden', swipeAnimation.vitamin)}
+              </SwiperSlide>
+              <SwiperSlide>
+                {' '}
+                {createBox(
+                  nutritionBox,
+                  nutritionTouched,
+                  'hidden',
+                  swipeAnimation.nutrition,
+                )}
+              </SwiperSlide>
+              <SwiperSlide>
+                {createBox(mineralBox, null, 'hidden', swipeAnimation.mineral)}
+              </SwiperSlide>
+            </Swiper>
+          </Box>
         </MobileView>
 
         <style jsx global>
