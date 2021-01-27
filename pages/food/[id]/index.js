@@ -20,6 +20,7 @@ import ReactDOM from 'react-dom'
 import Swipe from 'react-easy-swipe'
 import {Swiper, SwiperSlide} from 'swiper/react'
 import SwiperCore, {Navigation, Pagination} from 'swiper'
+import {BrowserView, MobileView, isBrowser, isMobile} from 'react-device-detect'
 
 import {
   Table,
@@ -277,31 +278,50 @@ function Home({searchResultsItems}) {
           {name}
         </Text>
 
-        <Swiper
-          initialSlide="0"
-          spaceBetween={50}
-          slidesPerView={1}
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
-          navigation
-          pagination={{clickable: true}}
-        >
-          <SwiperSlide>
+        <BrowserView>
+          <SimpleGrid
+            w={['80%']}
+            m="auto"
+            columns={[1, 1, 2, 2, 3]}
+            spacing={10}
+          >
             {createBox(vitaminBox, null, 'hidden', swipeAnimation.vitamin)}
-          </SwiperSlide>
-          <SwiperSlide>
-            {' '}
             {createBox(
               nutritionBox,
               nutritionTouched,
               'hidden',
               swipeAnimation.nutrition,
             )}
-          </SwiperSlide>
-          <SwiperSlide>
             {createBox(mineralBox, null, 'hidden', swipeAnimation.mineral)}
-          </SwiperSlide>
-        </Swiper>
+          </SimpleGrid>
+        </BrowserView>
+        <MobileView>
+          <Swiper
+            initialSlide="0"
+            spaceBetween={50}
+            slidesPerView={1}
+            onSlideChange={() => console.log('slide change')}
+            onSwiper={(swiper) => console.log(swiper)}
+            navigation
+            pagination={{clickable: true}}
+          >
+            <SwiperSlide w={['80%']} m="auto">
+              {createBox(vitaminBox, null, 'hidden', swipeAnimation.vitamin)}
+            </SwiperSlide>
+            <SwiperSlide w={['80%']} m="auto">
+              {' '}
+              {createBox(
+                nutritionBox,
+                nutritionTouched,
+                'hidden',
+                swipeAnimation.nutrition,
+              )}
+            </SwiperSlide>
+            <SwiperSlide w={['80%']} m="auto">
+              {createBox(mineralBox, null, 'hidden', swipeAnimation.mineral)}
+            </SwiperSlide>
+          </Swiper>
+        </MobileView>
 
         <style jsx global>
           {globalStyles}
