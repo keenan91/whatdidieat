@@ -118,7 +118,7 @@ function Home({searchResultsItems}) {
     nutrition: 'offScreen',
   })
 
-  const createBox = (arrayOfRowData, ref, animationIntial, boxName) => {
+  const createBox = (arrayOfRowData, boxTitle) => {
     const element = arrayOfRowData.map((value, index) => {
       return createRowContents(value.Calories, value.dailyValue, value.title)
     })
@@ -169,16 +169,13 @@ function Home({searchResultsItems}) {
           borderColor="#dadce0"
           borderRadius="10px"
           boxShadow="md"
-          ref={ref}
-          w={['80%']}
-          m="auto"
         >
-          <Table size="sm">
+          <Table size="md">
             <Thead>
               <Tr>
-                <Th>Nutritional Information</Th>
-                <Th>Per 100 Grams</Th>
-                <Th align="center">Daily Value</Th>
+                <Th fontSize="md">{`${boxTitle}`}</Th>
+                <Th fontSize="md">Per 100 Grams</Th>
+                <Th fontSize="md">Daily Value</Th>
               </Tr>
             </Thead>
             <Tbody>{element}</Tbody>
@@ -191,9 +188,11 @@ function Home({searchResultsItems}) {
   const createRowContents = (nutritionType, dailyValue, title) => {
     return (
       <Tr>
-        <Td>{title}</Td>
-        <Td> {nutritionType} </Td>
-        <Td isNumeric>
+        <Td fontSize="md" color="#4299E1">
+          {title}
+        </Td>
+        <Td fontSize="md"> {Math.round(nutritionType)} </Td>
+        <Td>
           <CircularProgress
             color="green.400"
             size="65px"
@@ -273,12 +272,21 @@ function Home({searchResultsItems}) {
     {Calories: PantoAcid, dailyValue: 10, title: 'Pantothenic Acid'},
     {Calories: CholineTot, dailyValue: 550, title: 'Choline'},
   ]
+  let nutritionTitle = [
+    'Nutritional Overview',
+    'Mineral Overview',
+    'Vitamin Overview',
+  ]
+
+  let nutritionalFact = 'Nutritional Overview'
   return (
     <ChakraProvider>
       <Box pt="20px">
         <Text align="center" pb="30px">
           {name}
         </Text>
+
+        <Text align="center" pb="30px"></Text>
 
         <BrowserView>
           <SimpleGrid
@@ -287,14 +295,9 @@ function Home({searchResultsItems}) {
             columns={[1, 1, 2, 2, 3]}
             spacing={10}
           >
-            {createBox(vitaminBox, null, 'hidden', swipeAnimation.vitamin)}
-            {createBox(
-              nutritionBox,
-              nutritionTouched,
-              'hidden',
-              swipeAnimation.nutrition,
-            )}
-            {createBox(mineralBox, null, 'hidden', swipeAnimation.mineral)}
+            {createBox(vitaminBox, 'Vitamin')}
+            {createBox(nutritionBox, 'Nutrition')}
+            {createBox(mineralBox, 'Mineral')}
           </SimpleGrid>
         </BrowserView>
         <MobileView>
@@ -302,25 +305,31 @@ function Home({searchResultsItems}) {
             initialSlide="0"
             spaceBetween={50}
             slidesPerView={1}
-            onSlideChange={() => console.log('slide change')}
+            onSlideChange={() => {}}
             onSwiper={(swiper) => console.log(swiper)}
             navigation
             pagination={{clickable: true}}
           >
             <SwiperSlide>
-              {createBox(vitaminBox, null, 'hidden', swipeAnimation.vitamin)}
+              <Text align="center" pb="30px">
+                {' '}
+                Nutrition Overview
+              </Text>
+              {createBox(nutritionBox, 'Nutritional')}
             </SwiperSlide>
             <SwiperSlide>
-              {' '}
-              {createBox(
-                nutritionBox,
-                nutritionTouched,
-                'hidden',
-                swipeAnimation.nutrition,
-              )}
+              <Text align="center" pb="30px">
+                {' '}
+                Vitamin Overview
+              </Text>
+              {createBox(vitaminBox, 'Vitamin')}
             </SwiperSlide>
             <SwiperSlide>
-              {createBox(mineralBox, null, 'hidden', swipeAnimation.mineral)}
+              <Text align="center" pb="30px">
+                {' '}
+                Mineral Overview
+              </Text>
+              {createBox(mineralBox, 'Mineral')}
             </SwiperSlide>
           </Swiper>
         </MobileView>
