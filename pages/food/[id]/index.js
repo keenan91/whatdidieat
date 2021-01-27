@@ -170,6 +170,8 @@ function Home({searchResultsItems}) {
           borderRadius="10px"
           boxShadow="md"
           ref={ref}
+          w={['80%']}
+          m="auto"
         >
           <Table size="sm">
             <Thead>
@@ -296,33 +298,31 @@ function Home({searchResultsItems}) {
           </SimpleGrid>
         </BrowserView>
         <MobileView>
-          <Box w={['80%']} m="auto">
-            <Swiper
-              initialSlide="0"
-              spaceBetween={50}
-              slidesPerView={1}
-              onSlideChange={() => console.log('slide change')}
-              onSwiper={(swiper) => console.log(swiper)}
-              navigation
-              pagination={{clickable: true}}
-            >
-              <SwiperSlide>
-                {createBox(vitaminBox, null, 'hidden', swipeAnimation.vitamin)}
-              </SwiperSlide>
-              <SwiperSlide>
-                {' '}
-                {createBox(
-                  nutritionBox,
-                  nutritionTouched,
-                  'hidden',
-                  swipeAnimation.nutrition,
-                )}
-              </SwiperSlide>
-              <SwiperSlide>
-                {createBox(mineralBox, null, 'hidden', swipeAnimation.mineral)}
-              </SwiperSlide>
-            </Swiper>
-          </Box>
+          <Swiper
+            initialSlide="0"
+            spaceBetween={50}
+            slidesPerView={1}
+            onSlideChange={() => console.log('slide change')}
+            onSwiper={(swiper) => console.log(swiper)}
+            navigation
+            pagination={{clickable: true}}
+          >
+            <SwiperSlide>
+              {createBox(vitaminBox, null, 'hidden', swipeAnimation.vitamin)}
+            </SwiperSlide>
+            <SwiperSlide>
+              {' '}
+              {createBox(
+                nutritionBox,
+                nutritionTouched,
+                'hidden',
+                swipeAnimation.nutrition,
+              )}
+            </SwiperSlide>
+            <SwiperSlide>
+              {createBox(mineralBox, null, 'hidden', swipeAnimation.mineral)}
+            </SwiperSlide>
+          </Swiper>
         </MobileView>
 
         <style jsx global>
