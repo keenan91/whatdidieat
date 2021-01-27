@@ -1,8 +1,8 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import styles from '../../../styles/Home.module.css'
 import Fuse from 'fuse.js'
-import food from './food.json'
-import globalStyles from '../styles/global.js'
+import food from '../.././food.json'
+import globalStyles from '../../../styles/global.js'
 import {ChakraProvider} from '@chakra-ui/react'
 import {Input} from '@chakra-ui/input'
 import React, {useState, useEffect, useRef} from 'react'
@@ -40,10 +40,8 @@ const fuse = new Fuse(food, options)
 const pattern = 'pickles'
 const pattern2 = 'beef'
 
-export default function Home(query) {
-  const [searchResults, setSearchResults] = useState(() => {
-    return fuse.search(pattern)
-  })
+export default function Home({id}) {
+  const [searchResults, setSearchResults] = useState(fuse.search(id))
 
   const MotionBox = motion.custom(
     forwardRef((props, ref) => {
@@ -83,14 +81,13 @@ export default function Home(query) {
 
   useEffect(() => {
     setTimeout(() => {
-      inputOnChangeHandler('ground beef')
-      console.log('mission accomplished')
+      inputOnChangeHandler(id)
     }, 500)
   }, [])
   let dailyValueColor = '#00A3C4'
   let caloriesCalor = '#6B46C1'
   const animationCircularProgressBar = (myCircle) => {
-    console.log(myCircle.current)
+    // console.log(myCircle.current)
   }
 
   const inputValue = useRef()
@@ -106,7 +103,7 @@ export default function Home(query) {
             }}
             ref={inputValue}
             placeholder="Search a Food"
-          />{' '}
+          />
           <Link
             href="/searchedFood/[id]"
             as={`/searchedFood/${inputValueState}`}
@@ -147,7 +144,7 @@ export default function Home(query) {
           pr="40px"
         >
           {searchResultsItems.map((value, index) => {
-            console.log(value)
+            //console.log(value)
             itemCounter++
             const stringChanged = value.name.replace(/,/g, ' ').toLowerCase()
             const words = stringChanged.split(' ')
@@ -248,4 +245,12 @@ export default function Home(query) {
       </main>
     </ChakraProvider>
   )
+}
+
+export async function getServerSideProps({query}) {
+  const {id} = query
+
+  return {
+    props: {id},
+  }
 }
