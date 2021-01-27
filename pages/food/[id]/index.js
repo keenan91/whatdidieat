@@ -21,7 +21,8 @@ import Swipe from 'react-easy-swipe'
 import {Swiper, SwiperSlide} from 'swiper/react'
 import SwiperCore, {Navigation, Pagination} from 'swiper'
 import {BrowserView, MobileView, isBrowser, isMobile} from 'react-device-detect'
-
+import {IconButton} from '@chakra-ui/react'
+import {SearchIcon} from '@chakra-ui/icons'
 import {
   Table,
   Thead,
@@ -32,7 +33,24 @@ import {
   Td,
   TableCaption,
 } from '@chakra-ui/react'
-
+const options = {
+  // isCaseSensitive: false,
+  includeScore: true,
+  //shouldSort: false,
+  // includeMatches: false,
+  //findAllMatches: false,
+  // minMatchCharLength: 1,
+  // location: 0,
+  threshold: 0.4,
+  // distance: 100,
+  // useExtendedSearch: false,
+  // ignoreLocation: false,
+  // ignoreFieldNorm: false,
+  keys: ['name', 'Calories'],
+}
+const fuse = new Fuse(food, options)
+const pattern = 'pickles'
+const pattern2 = 'beef'
 SwiperCore.use([Navigation, Pagination])
 /* const slides = []
 for (let i = 0; i < 5; i += 1) {
@@ -44,7 +62,31 @@ for (let i = 0; i < 5; i += 1) {
 } */
 
 function Home({searchResultsItems}) {
+  const [searchResults, setSearchResults] = useState(() => {
+    return fuse.search(pattern)
+  })
+
   const nutritionTouched = useRef()
+
+  const inputOnChangeHandler = (value) => {
+    if (value.length > 2) {
+      const pattern = value
+      const [first, second, ...rest] = pattern.split(/[ ,]+/)
+      const searchFuse = fuse.search(first)
+      const searchFuseItems = searchFuse.map((value) => {
+        return value.item
+      })
+      const fuse2 = new Fuse(searchFuseItems, options)
+      if (second == undefined) {
+        //console.log(first)
+        setSearchResults(searchFuse)
+      } else {
+        const searchFuse2 = fuse2.search(second)
+        //console.log(second)
+        setSearchResults(searchFuse2)
+      }
+    }
+  }
   const onSwipeStart = (event) => {
     console.log('Start swiping...', event)
   }
@@ -277,11 +319,28 @@ function Home({searchResultsItems}) {
     'Mineral Overview',
     'Vitamin Overview',
   ]
-
+  const inputValue = useRef()
+  const [inputValueState, setInputValueState] = useState('butter')
   let nutritionalFact = 'Nutritional Overview'
   return (
     <ChakraProvider>
       <Box pt="20px">
+        <div className="container">
+          <Input
+            onChange={() => {
+              setInputValueState(inputValue.current.value)
+            }}
+            ref={inputValue}
+            placeholder="Search a Food"
+          />{' '}
+          <IconButton
+            colorScheme="blue"
+            aria-label="Search database"
+            onClick={(e) => {}}
+            icon={<SearchIcon />}
+          />
+        </div>
+
         <Text align="center" pb="30px">
           {name}
         </Text>
