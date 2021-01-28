@@ -19,6 +19,7 @@
     "react-device-detect": "^1.15.0",
     "react-dom": "17.0.1",
     "react-easy-swipe": "0.0.21",
+    "react-icons": "^4.1.0",
     "sass": "^1.32.5",
     "swiper": "^6.4.8"
   }
