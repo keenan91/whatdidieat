@@ -111,7 +111,7 @@ export default function Home({id}) {
         </Link>
         <div className="container">
           <Input
-            onChange={() => {
+            onBlur={() => {
               setInputValueState(inputValue.current.value)
             }}
             ref={inputValue}
