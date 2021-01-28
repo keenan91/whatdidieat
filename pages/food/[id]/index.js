@@ -66,7 +66,27 @@ for (let i = 0; i < 5; i += 1) {
   )
 } */
 
-export default function Home({searchResultsItems}) {
+export default function Home({id}) {
+  const options = {
+    // isCaseSensitive: false,
+    includeScore: true,
+    //shouldSort: false,
+    // includeMatches: false,
+    //findAllMatches: false,
+    // minMatchCharLength: 1,
+    // location: 0,
+    threshold: 0.4,
+    // distance: 100,
+    // useExtendedSearch: false,
+    // ignoreLocation: false,
+    // ignoreFieldNorm: false,
+    keys: ['name', 'Calories'],
+  }
+  const fuse = new Fuse(food, options)
+  const fuseSearchResults = fuse.search(id)
+  const searchResultsItems = fuseSearchResults.map((searchResults, index) => {
+    return searchResults.item
+  })
   const [searchResults, setSearchResults] = useState(() => {
     return fuse.search(pattern)
   })
@@ -260,8 +280,6 @@ export default function Home({searchResultsItems}) {
     )
   }
 
-  let id = null
-
   let itemCounter = 0
 
   const MotionBox = motion.custom(
@@ -431,28 +449,8 @@ export default function Home({searchResultsItems}) {
 
 export async function getServerSideProps({query}) {
   const {id} = query
-  const options = {
-    // isCaseSensitive: false,
-    includeScore: true,
-    //shouldSort: false,
-    // includeMatches: false,
-    //findAllMatches: false,
-    // minMatchCharLength: 1,
-    // location: 0,
-    threshold: 0.4,
-    // distance: 100,
-    // useExtendedSearch: false,
-    // ignoreLocation: false,
-    // ignoreFieldNorm: false,
-    keys: ['name', 'Calories'],
-  }
-  const fuse = new Fuse(food, options)
-  const searchResults = fuse.search(id)
-  const searchResultsItems = searchResults.map((searchResults, index) => {
-    return searchResults.item
-  })
-  searchResultsItems[0].typed = id
+
   return {
-    props: {searchResultsItems},
+    props: {id},
   }
 }
