@@ -44,7 +44,7 @@ export default function Home(query) {
   const [searchResults, setSearchResults] = useState(() => {
     return fuse.search(pattern)
   })
-
+  console.log(searchResults)
   const MotionBox = motion.custom(
     forwardRef((props, ref) => {
       const chakraProps = Object.fromEntries(
@@ -149,7 +149,11 @@ export default function Home(query) {
           {searchResultsItems.map((value, index) => {
             console.log(value)
             itemCounter++
-            const stringChanged = value.name.replace(/,/g, ' ').toLowerCase()
+            const stringChanged = value.name
+              .replace(/,/g, ' ')
+              .replace(/\//g, '')
+              .replace(/%/g, '')
+              .toLowerCase()
             const words = stringChanged.split(' ')
 
             for (let i = 0; i < words.length; i++) {

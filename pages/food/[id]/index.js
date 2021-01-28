@@ -15,14 +15,19 @@ import {Divider} from '@chakra-ui/react'
 import {Spacer} from '@chakra-ui/react'
 import {forwardRef} from '@chakra-ui/react'
 import {motion, isValidMotionProp} from 'framer-motion'
-import {Link} from 'next/link'
+import Link from 'next/link'
 import ReactDOM from 'react-dom'
 import Swipe from 'react-easy-swipe'
 import {Swiper, SwiperSlide} from 'swiper/react'
 import SwiperCore, {Navigation, Pagination} from 'swiper'
 import {BrowserView, MobileView, isBrowser, isMobile} from 'react-device-detect'
 import {IconButton} from '@chakra-ui/react'
-import {SearchIcon} from '@chakra-ui/icons'
+import {SearchIcon, ArrowBackIcon} from '@chakra-ui/icons'
+import {Icon} from '@chakra-ui/react'
+import {FiHome} from 'react-icons/fi'
+
+// If i want the back buttom to allow the user to go back to what they typed not what they clicked then I need to pass the input data via a query paramater
+
 import {
   Table,
   Thead,
@@ -61,7 +66,7 @@ for (let i = 0; i < 5; i += 1) {
   )
 } */
 
-function Home({searchResultsItems}) {
+export default function Home({searchResultsItems}) {
   const [searchResults, setSearchResults] = useState(() => {
     return fuse.search(pattern)
   })
@@ -152,6 +157,7 @@ function Home({searchResultsItems}) {
     VitK,
     Zinc,
     name,
+    typed,
   } = searchResultsItems[0]
   console.log(searchResultsItems[0])
   const [swipeAnimation, setSwipeAnimation] = useState({
@@ -324,6 +330,14 @@ function Home({searchResultsItems}) {
   let nutritionalFact = 'Nutritional Overview'
   return (
     <ChakraProvider>
+      <Link href="/">
+        <IconButton
+          colorScheme="purple"
+          aria-label="Search database"
+          onClick={(e) => {}}
+          icon={<Icon as={FiHome} />}
+        />
+      </Link>
       <Box pt="20px">
         <div className="container">
           <Input
@@ -333,17 +347,31 @@ function Home({searchResultsItems}) {
             ref={inputValue}
             placeholder="Search a Food"
           />{' '}
-          <IconButton
-            colorScheme="blue"
-            aria-label="Search database"
-            onClick={(e) => {}}
-            icon={<SearchIcon />}
-          />
+          <Link
+            href="/searchedFood/[id]"
+            as={`/searchedFood/${inputValueState}`}
+          >
+            <IconButton
+              colorScheme="blue"
+              aria-label="Search database"
+              onClick={(e) => {}}
+              icon={<SearchIcon />}
+            />
+          </Link>
         </div>
-
-        <Text align="center" pb="30px">
-          {name}
-        </Text>
+        <div className="container">
+          <Link href="/searchedFood/[id]" as={`/searchedFood/${typed}`}>
+            <IconButton
+              colorScheme="yellow"
+              aria-label="Search database"
+              onClick={(e) => {}}
+              icon={<ArrowBackIcon />}
+            />
+          </Link>
+          <Text pl="40px" align="center" pb="30px">
+            {name}
+          </Text>
+        </div>
 
         <Text align="center" pb="30px"></Text>
 
@@ -423,8 +451,8 @@ export async function getServerSideProps({query}) {
   const searchResultsItems = searchResults.map((searchResults, index) => {
     return searchResults.item
   })
+  searchResultsItems[0].typed = id
   return {
     props: {searchResultsItems},
   }
 }
-export default Home

@@ -16,7 +16,10 @@ import {Spacer} from '@chakra-ui/react'
 import {forwardRef} from '@chakra-ui/react'
 import {motion, isValidMotionProp} from 'framer-motion'
 import Link from 'next/link'
-import {useRouter} from 'next/router'
+
+import {Icon} from '@chakra-ui/react'
+import {FiHome} from 'react-icons/fi'
+
 import {IconButton} from '@chakra-ui/react'
 
 import {SearchIcon} from '@chakra-ui/icons'
@@ -41,6 +44,8 @@ const pattern = 'pickles'
 const pattern2 = 'beef'
 
 export default function Home({id}) {
+  const [loadQuery, setLoadQuery] = useState(id)
+
   const [searchResults, setSearchResults] = useState(fuse.search(id))
 
   const MotionBox = motion.custom(
@@ -96,6 +101,14 @@ export default function Home({id}) {
   return (
     <ChakraProvider>
       <main>
+        <Link href="/">
+          <IconButton
+            colorScheme="purple"
+            aria-label="Search database"
+            onClick={(e) => {}}
+            icon={<Icon as={FiHome} />}
+          />
+        </Link>
         <div className="container">
           <Input
             onChange={() => {
@@ -104,14 +117,13 @@ export default function Home({id}) {
             ref={inputValue}
             placeholder="Search a Food"
           />
-          <Link
-            href="/searchedFood/[id]"
-            as={`/searchedFood/${inputValueState}`}
-          >
+          <Link href="[id]" as={`${inputValueState}`}>
             <IconButton
               colorScheme="blue"
               aria-label="Search database"
-              onClick={(e) => {}}
+              onClick={(e) => {
+                inputOnChangeHandler(inputValue.current.value)
+              }}
               icon={<SearchIcon />}
             />
           </Link>
@@ -146,7 +158,11 @@ export default function Home({id}) {
           {searchResultsItems.map((value, index) => {
             //console.log(value)
             itemCounter++
-            const stringChanged = value.name.replace(/,/g, ' ').toLowerCase()
+            const stringChanged = value.name
+              .replace(/,/g, ' ')
+              .replace(/\//g, ' ')
+              .replace(/%/g, ' ')
+              .toLowerCase()
             const words = stringChanged.split(' ')
 
             for (let i = 0; i < words.length; i++) {
