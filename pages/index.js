@@ -101,7 +101,7 @@ export default function Home(query) {
       <main>
         <div className="container">
           <Input
-            onChange={() => {
+            onBlur={() => {
               setInputValueState(inputValue.current.value)
             }}
             ref={inputValue}

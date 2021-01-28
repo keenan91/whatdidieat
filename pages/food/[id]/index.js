@@ -93,25 +93,6 @@ export default function Home({id}) {
 
   const nutritionTouched = useRef()
 
-  const inputOnChangeHandler = (value) => {
-    if (value.length > 2) {
-      const pattern = value
-      const [first, second, ...rest] = pattern.split(/[ ,]+/)
-      const searchFuse = fuse.search(first)
-      const searchFuseItems = searchFuse.map((value) => {
-        return value.item
-      })
-      const fuse2 = new Fuse(searchFuseItems, options)
-      if (second == undefined) {
-        //console.log(first)
-        setSearchResults(searchFuse)
-      } else {
-        const searchFuse2 = fuse2.search(second)
-        //console.log(second)
-        setSearchResults(searchFuse2)
-      }
-    }
-  }
   const onSwipeStart = (event) => {
     console.log('Start swiping...', event)
   }
@@ -359,7 +340,7 @@ export default function Home({id}) {
       <Box pt="20px">
         <div className="container">
           <Input
-            onChange={() => {
+            onBlur={() => {
               setInputValueState(inputValue.current.value)
             }}
             ref={inputValue}
