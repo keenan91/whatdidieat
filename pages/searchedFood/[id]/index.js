@@ -16,6 +16,8 @@ import {Spacer} from '@chakra-ui/react'
 import {forwardRef} from '@chakra-ui/react'
 import {motion, isValidMotionProp} from 'framer-motion'
 import Link from 'next/link'
+import {useRouter} from 'next/router'
+import NavBar from '../.././utils/NavBar'
 
 import {Icon} from '@chakra-ui/react'
 import {FiHome} from 'react-icons/fi'
@@ -47,6 +49,7 @@ export default function Home({id}) {
   const [loadQuery, setLoadQuery] = useState(id)
 
   const [searchResults, setSearchResults] = useState(fuse.search(id))
+  const router = useRouter()
 
   const MotionBox = motion.custom(
     forwardRef((props, ref) => {
@@ -100,17 +103,16 @@ export default function Home({id}) {
 
   return (
     <ChakraProvider>
+      <NavBar></NavBar>
       <main>
-        <Link href="/">
-          <IconButton
-            colorScheme="purple"
-            aria-label="Search database"
-            onClick={(e) => {}}
-            icon={<Icon as={FiHome} />}
-          />
-        </Link>
         <div className="container">
           <Input
+            onKeyUp={(e) => {
+              if (event.keyCode === 13) {
+                router.push(inputValue.current.value)
+                setInputValueState(inputValue.current.value)
+              }
+            }}
             onBlur={() => {
               setInputValueState(inputValue.current.value)
             }}
@@ -128,27 +130,34 @@ export default function Home({id}) {
             />
           </Link>
         </div>
-        <Text
-          align="center"
-          pl="10px"
-          pr="10px"
-          pt="10px"
-          fontSize="4xl"
-          color={caloriesCalor}
-        >
-          Calories Per 100 grams
-        </Text>
-        <Text
-          align="center"
-          pl="10px"
-          pr="10px"
-          pt="10px"
-          pb="10px"
-          fontSize="4xl"
-          color={dailyValueColor}
-        >
-          Daily Values Based on 2000 calories
-        </Text>
+        <Flex justify="center">
+          <Text
+            display="inline-block"
+            align="center"
+            pl="10px"
+            pr="10px"
+            pt="10px"
+            fontSize="xl"
+            color={caloriesCalor}
+          >
+            Calories Per 100 grams
+          </Text>
+          <Divider display="inline-block" orientation="vertical" />
+
+          <Text
+            display="inline-block"
+            align="center"
+            pl="10px"
+            pr="10px"
+            pt="10px"
+            pb="10px"
+            fontSize="xl"
+            color={dailyValueColor}
+          >
+            Daily Values Based on 2000 calories{' '}
+          </Text>
+        </Flex>
+
         <SimpleGrid
           columns={[1, 1, 2, 3, 4, 4]}
           spacing={10}

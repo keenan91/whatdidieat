@@ -10,7 +10,7 @@ import {Box, Flex, Stack, Grid, Wrap, AspectRatio} from '@chakra-ui/layout'
 import {Text} from '@chakra-ui/react'
 import {SimpleGrid} from '@chakra-ui/react'
 import {Center, Square, Circle} from '@chakra-ui/react'
-import {CircularProgress, CircularProgressLabel} from '@chakra-ui/react'
+import {CircularProgress, CircularProgressLabel, Tag} from '@chakra-ui/react'
 import {Divider} from '@chakra-ui/react'
 import {Spacer} from '@chakra-ui/react'
 import {forwardRef} from '@chakra-ui/react'
@@ -25,6 +25,9 @@ import {IconButton} from '@chakra-ui/react'
 import {SearchIcon, ArrowBackIcon} from '@chakra-ui/icons'
 import {Icon} from '@chakra-ui/react'
 import {FiHome} from 'react-icons/fi'
+import BasicUsage from '../.././utils/BasicUsage'
+import NavBar from '../.././utils/NavBar'
+import CleanText from '../.././utils/CleanText'
 
 // If i want the back buttom to allow the user to go back to what they typed not what they clicked then I need to pass the input data via a query paramater
 
@@ -169,17 +172,17 @@ export default function Home({id}) {
 
   const createBox = (arrayOfRowData, boxTitle) => {
     const element = arrayOfRowData.map((value, index) => {
-      return createRowContents(value.Calories, value.dailyValue, value.title)
+      return createRowContents(
+        value.Calories,
+        value.dailyValue,
+        value.title,
+        value.information,
+      )
     })
 
     return (
       <motion.div
-        whileHover={{
-          scale: 1.09,
-          transition: {
-            duration: 0.2,
-          },
-        }}
+        whileHover={{}}
         initial="hidden"
         animate="visible"
         variants={{
@@ -234,11 +237,20 @@ export default function Home({id}) {
     )
   }
 
-  const createRowContents = (nutritionType, dailyValue, title) => {
+  const createRowContents = (nutritionType, dailyValue, title, information) => {
     return (
       <Tr>
         <Td fontSize="md" color="#4299E1">
           {title}
+          {information ? (
+            <BasicUsage
+              title={title}
+              sources={information.goodSources}
+              fact={information.funFact}
+            >
+              {information.benefits}
+            </BasicUsage>
+          ) : null}
         </Td>
         <Td fontSize="md"> {Math.round(nutritionType)} </Td>
         <Td>
@@ -287,37 +299,297 @@ export default function Home({id}) {
     {Calories: FASat, dailyValue: 20, title: 'Saturated Fat'},
     {Calories: FAMono, dailyValue: 2000, title: 'Monosaturated Fat'},
     {Calories: FAPoly, dailyValue: 2000, title: 'Polysaturated Fat'},
-    {Calories: Sodium, dailyValue: 2300, title: 'Sodium'},
+    {
+      Calories: Sodium,
+      dailyValue: 2300,
+      title: 'Sodium',
+    },
     {Calories: Carbohydrt, dailyValue: 275, title: 'Carbohydrt'},
     {Calories: Sugar, dailyValue: 2000, title: 'Sugar'},
     {Calories: Protein, dailyValue: 50, title: 'Protein'},
   ]
 
   let mineralBox = [
-    {Calories: Calcium, dailyValue: 1300, title: 'Calcium'},
-    {Calories: Copper, dailyValue: 0.9, title: 'Copper'},
-    {Calories: Iron, dailyValue: 18, title: 'Iron'},
-    {Calories: Magnesium, dailyValue: 420, title: 'Magnesium'},
-    {Calories: Phosphorus, dailyValue: 1250, title: 'Phosphorus'},
-    {Calories: Potassium, dailyValue: 4700, title: 'Potassium'},
-    {Calories: Sodium, dailyValue: 2300, title: 'Sodium'},
-    {Calories: Selenium, dailyValue: 55, title: 'Selenium'},
-    {Calories: Zinc, dailyValue: 11, title: 'Zinc'},
+    {
+      Calories: Calcium,
+      dailyValue: 1300,
+      title: 'Calcium',
+      information: {
+        benefits:
+          'Builds and protects bones and teeth. Helps with muscle contractions and relaxation, blood clotting, and nerve impulse transmission. Plays a role in hormone secretion and enzyme activation. Helps maintain healthy blood pressure',
+        goodSources:
+          'Yogurt, cheese, milk, tofu, sardines, salmon, fortified juices, leafy green vegetables, such as broccoli and kale (but not spinach or Swiss chard, which have binders that lessen absorption)',
+        funFact:
+          'Adults absorb roughly 30% of calcium ingested, but this can vary depending on the source. Diets very high in calcium may increase the risk of prostate cancer.',
+      },
+    },
+    {
+      Calories: Copper,
+      dailyValue: 0.9,
+      title: 'Copper',
+      information: {
+        benefits:
+          'Plays an important role in iron metabolism and immune system. Helps make red blood cells',
+        goodSources:
+          'Liver, shellfish, nuts, seeds, whole-grain products, beans, prunes, cocoa, black pepper',
+        funFact: 'More than half of the copper in foods is absorbed.',
+      },
+    },
+    {
+      Calories: Iron,
+      dailyValue: 18,
+      title: 'Iron',
+      information: {
+        benefits:
+          'Helps hemoglobin in red blood cells and myoglobin in muscle cells ferry oxygen throughout the body. Needed for chemical reactions in the body and for making amino acids, collagen, neurotransmitters, and hormones',
+        goodSources:
+          'Red meat, poultry, eggs, fruits, green vegetables, fortified bread and grain products',
+        funFact:
+          "Many women of childbearing age don't get enough iron. Women who do not menstruate probably need the same amount of iron as men. Because iron is harder to absorb from plants, experts suggest vegetarians get twice the recommended amount (assuming the source is food).",
+      },
+    },
+    {
+      Calories: Magnesium,
+      dailyValue: 420,
+      title: 'Magnesium',
+      information: {
+        benefits:
+          'Needed for many chemical reactions in the body Works with calcium in muscle contraction, blood clotting, and regulation of blood pressure. Helps build bones and teeth',
+        goodSources:
+          'Green vegetables such as spinach and broccoli, legumes, cashews, sunflower seeds and other seeds, halibut, whole-wheat bread, milk',
+        funFact:
+          'The majority of magnesium in the body is found in bones. If your blood levels are low, your body may tap into these reserves to correct the problem.',
+      },
+    },
+    {
+      Calories: Phosphorus,
+      dailyValue: 1250,
+      title: 'Phosphorus',
+      information: {
+        benefits:
+          'Helps build and protect bones and teeth. Part of DNA and RNA. Helps convert food into energy. Part of phospholipids, which carry lipids in blood and help shuttle nutrients into and out of cells',
+        goodSources:
+          'Wide variety of foods, including milk and dairy products, meat, fish, poultry, eggs, liver, green peas, broccoli, potatoes, almonds',
+        funFact:
+          'Certain drugs bind with phosphorus, making it unavailable and causing bone loss, weakness, and pain.',
+      },
+    },
+    {
+      Calories: Potassium,
+      dailyValue: 4700,
+      title: 'Potassium',
+      information: {
+        benefits:
+          'Balances fluids in the body. Helps maintain steady heartbeat and send nerve impulses. Needed for muscle contractions. A diet rich in potassium seems to lower blood pressure. Getting enough potassium from your diet may benefit bones',
+        goodSources: 'Meat, milk, fruits, vegetables, grains, legumes',
+        funFact:
+          'Food sources do not cause toxicity, but high-dose supplements might.',
+      },
+    },
+    {
+      Calories: Sodium,
+      dailyValue: 2300,
+      title: 'Sodium',
+      information: {
+        benefits:
+          'Balances fluids in the body. Helps send nerve impulses. Needed for muscle contractions. Impacts blood pressure; even modest reductions in salt consumption can lower blood pressure',
+        goodSources: 'Salt, soy sauce, processed foods, vegetables',
+        funFact:
+          'While experts recommend that people limit sodium intake to 2,300 mg, most Americans consume 4,000–6,000 mg a day',
+      },
+    },
+    {
+      Calories: Selenium,
+      dailyValue: 55,
+      title: 'Selenium',
+      information: {
+        benefits:
+          'Acts as an antioxidant, neutralizing unstable molecules that can damage cells. Helps regulate thyroid hormone activity',
+        goodSources:
+          'Organ meats, seafood, walnuts, sometimes plants (depends on soil content), grain products',
+        funFact:
+          'Researchers are investigating whether selenium may help reduce the risk of developing cancer, but with mixed results.',
+      },
+    },
+    {
+      Calories: Zinc,
+      dailyValue: 11,
+      title: 'Zinc',
+      information: {
+        benefits:
+          'Helps form many enzymes and proteins and create new cells. Frees vitamin A from storage in the liver. Needed for immune system, taste, smell, and wound healing. When taken with certain antioxidants, zinc may delay the progression of age-related macular degeneration',
+        goodSources:
+          'Red meat, poultry, oysters and some other seafood, fortified cereals, beans, nuts',
+        funFact:
+          'Because vegetarians absorb less zinc, experts suggest that they get twice the recommended requirement of zinc from plant foods.',
+      },
+    },
   ]
   let vitaminBox = [
-    {Calories: VitAIU, dailyValue: 5000, title: 'Vitamin A'},
-    {Calories: VitC, dailyValue: 90, title: 'Vitamin C'},
-    {Calories: VitDIU, dailyValue: 400, title: 'Vitamin D'},
-    {Calories: VitE, dailyValue: 30, title: 'Vitamin E'},
-    {Calories: VitK, dailyValue: 120, title: 'Vitamin K'},
-    {Calories: Thiamin, dailyValue: 1.2, title: 'Thiamin'},
-    {Calories: Riboflavin, dailyValue: 1.3, title: 'RiboFlavin'},
-    {Calories: Niacin, dailyValue: 20, title: 'Niacin'},
-    {Calories: VitB6, dailyValue: 2, title: 'Vitamin B6'},
-    {Calories: FolicAcid, dailyValue: 400, title: 'Folate'},
-    {Calories: VitB12, dailyValue: 6, title: 'Vitamin B12'},
-    {Calories: PantoAcid, dailyValue: 10, title: 'Pantothenic Acid'},
-    {Calories: CholineTot, dailyValue: 550, title: 'Choline'},
+    {
+      Calories: VitAIU,
+      dailyValue: 5000,
+      title: 'Vitamin A',
+      information: {
+        benefits:
+          'Essential for vision Lycopene may lower prostate cancer risk. Keeps tissues and skin healthy. Plays an important role in bone growth and in the immune system. Diets rich in the carotenoids alpha carotene and lycopene seem to lower lung cancer risk. Carotenoids act as antioxidants. Foods rich in the carotenoids lutein and zeaxanthin may protect against cataract',
+        goodSources:
+          'Sources of retinoids: beef liver, eggs, shrimp, fish, fortified milk, butter, cheddar cheese, Swiss cheese Sources of beta carotene: sweet potatoes, carrots, pumpkins, squash, spinach, mangoes, turnip greens',
+        funFact:
+          'Many people get too much preformed vitamin A from food and supplements. Large amounts of supplemental vitamin A (but not beta carotene) can be harmful to bones. Normal 0 false false false EN-US X-NONE X-NONE',
+      },
+    },
+    {
+      Calories: VitC,
+      dailyValue: 90,
+      title: 'Vitamin C',
+      information: {
+        benefits:
+          'Foods rich in vitamin C may lower the risk for some cancers, including those of the mouth, esophagus, stomach, and breast. Long-term use of supplemental vitamin C may protect against cataracts. Helps make collagen, a connective tissue that knits together wounds and supports blood vessel walls. Helps make the neurotransmitters serotonin and norepinephrine Acts as an antioxidant, neutralizing unstable molecules that can damage cells. Bolsters the immune system',
+        goodSources:
+          'Fruits and fruit juices (especially citrus), potatoes, broccoli, bell peppers, spinach, strawberries, tomatoes, Brussels sprouts',
+        funFact:
+          'Evidence that vitamin C helps reduce colds has not been convincing.',
+      },
+    },
+    {
+      Calories: VitDIU,
+      dailyValue: 400,
+      title: 'Vitamin D',
+      information: {
+        benefits:
+          'Helps maintain normal blood levels of calcium and phosphorus, which strengthen bones. Helps form teeth and bones. Supplements can reduce the number of non-spinal fractures',
+        goodSources:
+          'Fortified milk or margarine, fortified cereals, fatty fish',
+        funFact:
+          "Many people don't get enough of this nutrient. While the body uses sunlight to make vitamin D, it cannot make enough if you live in northern climates or don't spend much time in the sun.",
+      },
+    },
+    {
+      Calories: VitE,
+      dailyValue: 30,
+      title: 'Vitamin E',
+      information: {
+        benefits:
+          "Acts as an antioxidant, neutralizing unstable molecules that can damage cells. Protects vitamin A and certain lipids from damage. Diets rich in vitamin E may help prevent Alzheimer's disease.",
+        goodSources:
+          'Wide variety of foods, including vegetable oils, salad dressings and margarines made with vegetable oils, wheat germ, leafy green vegetables, whole grains, nuts',
+        funFact:
+          'Vitamin E does not prevent wrinkles or slow other aging processes.',
+      },
+    },
+    {
+      Calories: VitK,
+      dailyValue: 120,
+      title: 'Vitamin K',
+      information: {
+        benefits:
+          'Activates proteins and calcium essential to blood clotting. May help prevent hip fractures.',
+        goodSources:
+          'Cabbage, liver, eggs, milk, spinach, broccoli, sprouts, kale, collards, and other green vegetables',
+        funFact:
+          'Intestinal bacteria make a form of vitamin K that accounts for half your requirements. If you take an anticoagulant, keep your vitamin K intake consistent.',
+      },
+    },
+    {
+      Calories: Thiamin,
+      dailyValue: 1.2,
+      title: 'Thiamin',
+      information: {
+        benefits:
+          'Helps convert food into energy. Needed for healthy skin, hair, muscles, and brain and is critical for nerve function.',
+        goodSources:
+          'Pork chops, brown rice, ham, soymilk, watermelons, acorn squash',
+        funFact: 'Most nutritious foods have some thiamin.',
+      },
+    },
+    {
+      Calories: Riboflavin,
+      dailyValue: 1.3,
+      title: 'RiboFlavin',
+      information: {
+        benefits:
+          'Helps convert food into energy. Needed for healthy skin, hair, blood, and brain',
+        goodSources:
+          'Milk, eggs, yogurt, cheese, meats, green leafy vegetables, whole and enriched grains and cereals.',
+        funFact: 'Most Americans get enough of this nutrient.',
+      },
+    },
+    {
+      Calories: Niacin,
+      dailyValue: 20,
+      title: 'Niacin',
+      information: {
+        benefits:
+          'Helps convert food into energy. Essential for healthy skin, blood cells, brain, and nervous system',
+        goodSources:
+          'Meat, poultry, fish, fortified and whole grains, mushrooms, potatoes, peanut butter',
+        funFact:
+          'Niacin occurs naturally in food and can also be made by your body from the amino acid tryptophan, with the help of B6.',
+      },
+    },
+    {
+      Calories: VitB6,
+      dailyValue: 2,
+      title: 'Vitamin B6',
+      information: {
+        benefits:
+          'Vital for new cell creationHelps prevent brain and spine birth defects when taken early in pregnancy; should be taken regularly by all women of child-bearing age since women may not know they are pregnant in the first weeks of pregnancy. Can lower levels of homocysteine and may reduce heart disease risk May reduce risk for colon cancer. Offsets breast cancer risk among women who consume alcohol',
+        goodSources:
+          'Fortified grains and cereals, asparagus, okra, spinach, turnip greens, broccoli, legumes like black-eyed peas and chickpeas, orange juice, tomato juice',
+        funFact:
+          "Many people don't get enough of this nutrient.Occasionally, folic acid masks a B12 deficiency, which can lead to severe neurological complications. That's not a reason to avoid folic acid; just be sure to get enough B12.",
+      },
+    },
+    {
+      Calories: FolicAcid,
+      dailyValue: 400,
+      title: 'Folate',
+      information: {
+        benefits:
+          'Aids in lowering homocysteine levels and may reduce the risk of heart diseaseHelps convert tryptophan to niacin and serotonin, a neurotransmitter that plays key roles in sleep, appetite, and moods. Helps make red blood cells Influences cognitive abilities and immune function',
+        goodSources:
+          'Meat, fish, poultry, legumes, tofu and other soy products, potatoes, noncitrus fruits such as bananas and watermelons',
+        funFact: "Many people don't get enough of this nutrient.",
+      },
+    },
+    {
+      Calories: VitB12,
+      dailyValue: 6,
+      title: 'Vitamin B12',
+      information: {
+        benefits:
+          'Aids in lowering homocysteine levels and may lower the risk of heart disease. Assists in making new cells and breaking down some fatty acids and amino acids. Protects nerve cells and encourages their normal growth Helps make red blood cells and DNA',
+        goodSources: `Meat, poultry, fish, milk, cheese, eggs, fortified cereals, fortified soymilk",
+          funFact: "Some people, particularly older adults, are deficient in vitamin B12 because they have trouble absorbing this vitamin from food. Those on a vegan or vegetarian diet often don't get enough B12 as it's mostly found in animal products. They may need to take supplements. A lack of vitamin B12 can cause memory loss, dementia, and numbness in the arms and legs.`,
+      },
+    },
+    {
+      Calories: PantoAcid,
+      dailyValue: 10,
+      title: 'Pantothenic Acid',
+      information: {
+        benefits:
+          'Helps convert food into energy. Helps make lipids (fats), neurotransmitters, steroid hormones, and hemoglobin',
+        goodSources:
+          'Wide variety of nutritious foods, including chicken, egg yolk, whole grains, broccoli, mushrooms, avocados, tomato products',
+        funFact:
+          'Deficiency causes burning feet and other neurologic symptoms.',
+      },
+    },
+    {
+      Calories: CholineTot,
+      dailyValue: 550,
+      title: 'Choline',
+      information: {
+        benefits:
+          'Helps make and release the neurotransmitter acetylcholine, which aids in many nerve and brain activities. Plays a role in metabolizing and transporting fats',
+        goodSources:
+          'Many foods, especially milk, eggs, liver, salmon, and peanuts',
+        funFact:
+          "No rmally the body makes small amounts of choline. But experts don't know whether this amount is enough at certain ages.",
+      },
+    },
   ]
   let nutritionTitle = [
     'Nutritional Overview',
@@ -329,14 +601,7 @@ export default function Home({id}) {
   let nutritionalFact = 'Nutritional Overview'
   return (
     <ChakraProvider>
-      <Link href="/">
-        <IconButton
-          colorScheme="purple"
-          aria-label="Search database"
-          onClick={(e) => {}}
-          icon={<Icon as={FiHome} />}
-        />
-      </Link>
+      <NavBar></NavBar>
       <Box pt="20px">
         <div className="container">
           <Input
@@ -359,16 +624,10 @@ export default function Home({id}) {
           </Link>
         </div>
         <div className="container">
-          <Link href="/searchedFood/[id]" as={`/searchedFood/${typed}`}>
-            <IconButton
-              colorScheme="yellow"
-              aria-label="Search database"
-              onClick={(e) => {}}
-              icon={<ArrowBackIcon />}
-            />
-          </Link>
-          <Text pl="40px" align="center" pb="30px">
-            {name}
+          <Text pl="40px" align="center" pb="10px">
+            <Tag fontSize="2xl" colorScheme="purple">
+              <CleanText text={name}></CleanText>
+            </Tag>
           </Text>
         </div>
 
@@ -424,6 +683,7 @@ export default function Home({id}) {
           {globalStyles}
         </style>
       </Box>
+      tex
     </ChakraProvider>
   )
 }

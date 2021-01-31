@@ -18,6 +18,7 @@ import {motion, isValidMotionProp} from 'framer-motion'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {IconButton} from '@chakra-ui/react'
+import NavBar from './utils/NavBar'
 
 import {SearchIcon} from '@chakra-ui/icons'
 
@@ -98,6 +99,7 @@ export default function Home(query) {
 
   return (
     <ChakraProvider>
+      <NavBar></NavBar>
       <main>
         <div className="container">
           <Input
@@ -119,7 +121,7 @@ export default function Home(query) {
             />
           </Link>
         </div>
-        <Text
+        {/*   <Text
           align="center"
           pl="10px"
           pr="10px"
@@ -139,12 +141,13 @@ export default function Home(query) {
           color={dailyValueColor}
         >
           Daily Values Based on 2000 calories
-        </Text>
+        </Text> */}
         <SimpleGrid
           columns={[1, 1, 2, 3, 4, 4]}
           spacing={10}
           pl="40px"
           pr="40px"
+          pt="40px"
         >
           {searchResultsItems.map((value, index) => {
             console.log(value)
