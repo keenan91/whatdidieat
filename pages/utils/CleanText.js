@@ -4,7 +4,7 @@ const CleanText = ({text}) => {
     ?.replace(/\//g, '')
     ?.replace(/%/g, '')
     ?.toLowerCase()
-  const words = stringChanged ? stringChanged.split(' ') : undefined
+  const words = stringChanged ? stringChanged.split(' ') : ' '
 
   for (let i = 0; i < words?.length; i++) {
     if (words[i][0] == undefined) {
