@@ -576,7 +576,7 @@ export default function Home({id}) {
         <Flex justify="center" mt="50px">
           <Text pl="40px" pb="10px">
             <Tag fontSize="2xl" colorScheme="purple">
-              <CleanText text={name}></CleanText>
+              {CleanText ? <CleanText text={name}></CleanText> : null}
             </Tag>
           </Text>
         </Flex>
