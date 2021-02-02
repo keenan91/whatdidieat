@@ -27,6 +27,7 @@ import {Icon} from '@chakra-ui/react'
 import {FiHome} from 'react-icons/fi'
 import BasicUsage from '../.././utils/BasicUsage'
 import NavBar from '../.././utils/NavBar'
+import SearchBar from '../.././utils/SearchBar'
 import CleanText from '../.././utils/CleanText'
 
 // If i want the back buttom to allow the user to go back to what they typed not what they clicked then I need to pass the input data via a query paramater
@@ -96,25 +97,6 @@ export default function Home({id}) {
 
   const nutritionTouched = useRef()
 
-  const onSwipeStart = (event) => {
-    console.log('Start swiping...', event)
-  }
-
-  const onSwipeMove = (position, event) => {
-    if (position.x < -165) {
-      setSwipeAnimation({
-        vitamin: 'swipeEnd',
-        mineral: 'swipeStart',
-        nutrition: 'offScreen',
-      })
-    }
-    console.log(`Moved ${position.x} pixels horizontally`, event)
-    console.log(`Moved ${position.y} pixels vertically`, event)
-  }
-
-  const onSwipeEnd = (event) => {
-    console.log('End swiping...', event)
-  }
   const {
     AlphaCarot,
     BetaCarot,
@@ -164,11 +146,6 @@ export default function Home({id}) {
     typed,
   } = searchResultsItems[0]
   console.log(searchResultsItems[0])
-  const [swipeAnimation, setSwipeAnimation] = useState({
-    vitamin: 'visible',
-    mineral: 'offScreen',
-    nutrition: 'offScreen',
-  })
 
   const createBox = (arrayOfRowData, boxTitle) => {
     const element = arrayOfRowData.map((value, index) => {
@@ -274,16 +251,6 @@ export default function Home({id}) {
   }
 
   let itemCounter = 0
-
-  const MotionBox = motion.custom(
-    forwardRef((props, ref) => {
-      const chakraProps = Object.fromEntries(
-        // do not pass framer props to DOM element
-        Object.entries(props).filter(([key]) => !isValidMotionProp(key)),
-      )
-      return <CircularProgress ref={ref} {...chakraProps} />
-    }),
-  )
 
   // useEffect(() => {
   //   setTimeout(() => {
@@ -602,34 +569,17 @@ export default function Home({id}) {
   return (
     <ChakraProvider>
       <NavBar></NavBar>
-      <Box pt="20px">
-        <div className="container">
-          <Input
-            onBlur={() => {
-              setInputValueState(inputValue.current.value)
-            }}
-            ref={inputValue}
-            placeholder="Search a Food"
-          />{' '}
-          <Link
-            href="/searchedFood/[id]"
-            as={`/searchedFood/${inputValueState}`}
-          >
-            <IconButton
-              colorScheme="blue"
-              aria-label="Search database"
-              onClick={(e) => {}}
-              icon={<SearchIcon />}
-            />
-          </Link>
-        </div>
-        <div className="container">
-          <Text pl="40px" align="center" pb="10px">
+      <Box>
+        <Flex justify="center">
+          <SearchBar></SearchBar>
+        </Flex>
+        <Flex justify="center" mt="50px">
+          <Text pl="40px" pb="10px">
             <Tag fontSize="2xl" colorScheme="purple">
               <CleanText text={name}></CleanText>
             </Tag>
           </Text>
-        </div>
+        </Flex>
 
         <Text align="center" pb="30px"></Text>
 
