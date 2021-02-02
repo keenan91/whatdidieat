@@ -1,9 +1,9 @@
 const CleanText = ({text}) => {
   const stringChanged = text
-    .replace(/,/g, ' ')
-    .replace(/\//g, '')
-    .replace(/%/g, '')
-    .toLowerCase()
+    ?.replace(/,/g, ' ')
+    ?.replace(/\//g, '')
+    ?.replace(/%/g, '')
+    ?.toLowerCase()
   const words = stringChanged.split(' ')
 
   for (let i = 0; i < words.length; i++) {
