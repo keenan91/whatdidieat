@@ -16,7 +16,6 @@ import {Spacer} from '@chakra-ui/react'
 import {forwardRef} from '@chakra-ui/react'
 import {motion, isValidMotionProp} from 'framer-motion'
 import Link from 'next/link'
-import ReactDOM from 'react-dom'
 import Swipe from 'react-easy-swipe'
 import {Swiper, SwiperSlide} from 'swiper/react'
 import SwiperCore, {Navigation, Pagination} from 'swiper'
@@ -75,11 +74,11 @@ export default function Home({id}) {
     // isCaseSensitive: false,
     includeScore: true,
     //shouldSort: false,
-    // includeMatches: false,
+    includeMatches: false,
     //findAllMatches: false,
     // minMatchCharLength: 1,
     // location: 0,
-    threshold: 0.4,
+    threshold: 0.2,
     // distance: 100,
     // useExtendedSearch: false,
     // ignoreLocation: false,
@@ -87,10 +86,24 @@ export default function Home({id}) {
     keys: ['name', 'Calories'],
   }
   const fuse = new Fuse(food, options)
-  const fuseSearchResults = fuse.search(id)
-  const searchResultsItems = fuseSearchResults.map((searchResults, index) => {
-    return searchResults.item
+  const [first, second, ...rest] = id.split(/[ ,]+/)
+  console.log(first)
+  console.log(second)
+  const searchFuse = fuse.search(first)
+
+  let searchResultsItems = searchFuse.map((value) => {
+    return value.item
   })
+  const fuse2 = new Fuse(searchResultsItems, options)
+  if (second == undefined) {
+  } else {
+    const searchFuse2 = fuse2.search(second)
+    //console.log(second)
+    searchResultsItems = searchFuse2.map((value) => {
+      return value.item
+    })
+  }
+
   const [searchResults, setSearchResults] = useState(() => {
     return fuse.search(pattern)
   })
