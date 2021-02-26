@@ -82,7 +82,7 @@ const SearchBar = () => {
             <Stack spacing={4}>
               <InputGroup>
                 <Input
-                  minW="500px"
+                  minW={['300px', '300px', '400px', '500px']}
                   onChange={(e) => {
                     inputOnChangeHandler(e.target.value)
                   }}
