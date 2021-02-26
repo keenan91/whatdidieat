@@ -216,8 +216,15 @@ export default function Home({id}) {
             <Thead>
               <Tr>
                 <Th fontSize="md">{`${boxTitle}`}</Th>
-                <Th fontSize="md">Per 100 Grams</Th>
-                <Th fontSize="md">Daily Value</Th>
+                <Th fontSize="md" textAlign="center">
+                  Per 100
+                  <Text display="inline" textTransform="lowercase">
+                    g
+                  </Text>
+                </Th>
+                <Th fontSize="md" textAlign="center">
+                  Daily Value
+                </Th>
               </Tr>
             </Thead>
             <Tbody>{element}</Tbody>
@@ -242,8 +249,11 @@ export default function Home({id}) {
             </BasicUsage>
           ) : null}
         </Td>
-        <Td fontSize="md"> {Math.round(nutritionType)} </Td>
-        <Td>
+        <Td fontSize="md" textAlign="center">
+          {' '}
+          {Math.round(nutritionType)}{' '}
+        </Td>
+        <Td textAlign="center">
           <CircularProgress
             color="green.400"
             size="65px"
@@ -587,7 +597,7 @@ export default function Home({id}) {
           <SearchBar></SearchBar>
         </Flex>
         <Flex justify="center" mt="50px">
-          <Text pl="40px" pb="10px">
+          <Text pb="10px">
             <Tag fontSize="2xl" colorScheme="purple">
               {CleanText ? <CleanText text={name}></CleanText> : null}
             </Tag>
