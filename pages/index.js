@@ -609,53 +609,11 @@ export default function Home() {
         </Flex>
 
         <Text align="center" pb="30px"></Text>
-
-        <BrowserView>
-          <SimpleGrid
-            w={['80%']}
-            m="auto"
-            columns={[1, 1, 2, 2, 3]}
-            spacing={10}
-          >
-            {createBox(vitaminBox, 'Vitamin')}
-            {createBox(nutritionBox, 'Nutrition')}
-            {createBox(mineralBox, 'Mineral')}
-          </SimpleGrid>
-        </BrowserView>
-        <MobileView>
-          <Swiper
-            initialSlide="0"
-            spaceBetween={50}
-            slidesPerView={1}
-            onSlideChange={() => {}}
-            onSwiper={(swiper) => console.log(swiper)}
-            navigation
-            pagination={{clickable: true}}
-          >
-            <SwiperSlide>
-              <Text align="center" pb="30px">
-                {' '}
-                Nutrition Overview
-              </Text>
-              {createBox(nutritionBox, 'Nutritional')}
-            </SwiperSlide>
-            <SwiperSlide>
-              <Text align="center" pb="30px">
-                {' '}
-                Vitamin Overview
-              </Text>
-              {createBox(vitaminBox, 'Vitamin')}
-            </SwiperSlide>
-            <SwiperSlide>
-              <Text align="center" pb="30px">
-                {' '}
-                Mineral Overview
-              </Text>
-              {createBox(mineralBox, 'Mineral')}
-            </SwiperSlide>
-          </Swiper>
-        </MobileView>
-
+        <SimpleGrid w={['80%']} m="auto" columns={[1, 1, 2, 2, 3]} spacing={10}>
+          {createBox(vitaminBox, 'Vitamin')}
+          {createBox(nutritionBox, 'Nutrition')}
+          {createBox(mineralBox, 'Mineral')}
+        </SimpleGrid>
         <style jsx global>
           {globalStyles}
         </style>
