@@ -606,19 +606,14 @@ export default function Home({id}) {
 
         <Text align="center" pb="30px"></Text>
 
-        <BrowserView>
-          <SimpleGrid
-            w={['80%']}
-            m="auto"
-            columns={[1, 1, 2, 2, 3]}
-            spacing={10}
-          >
-            {createBox(vitaminBox, 'Vitamin')}
-            {createBox(nutritionBox, 'Nutrition')}
-            {createBox(mineralBox, 'Mineral')}
-          </SimpleGrid>
-        </BrowserView>
-        <MobileView>
+        {/* <BrowserView> */}
+        <SimpleGrid w={['80%']} m="auto" columns={[1, 1, 2, 2, 3]} spacing={10}>
+          {createBox(vitaminBox, 'Vitamin')}
+          {createBox(nutritionBox, 'Nutrition')}
+          {createBox(mineralBox, 'Mineral')}
+        </SimpleGrid>
+        {/* </BrowserView> */}
+        {/* <MobileView>
           <Swiper
             initialSlide="0"
             spaceBetween={50}
@@ -650,7 +645,7 @@ export default function Home({id}) {
               {createBox(mineralBox, 'Mineral')}
             </SwiperSlide>
           </Swiper>
-        </MobileView>
+        </MobileView> */}
 
         <style jsx global>
           {globalStyles}
