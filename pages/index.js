@@ -609,10 +609,12 @@ export default function Home() {
         </Flex>
 
         <SimpleGrid
-          w={['80%']}
+          w={['95%', '80%']}
           m="auto"
+          pl="0"
+          pr="0"
           columns={[1, 1, 2, 2, 3]}
-          spacing={[0, 10]}
+          spacing={[10]}
         >
           {createBox(vitaminBox, 'Vitamin')}
           {createBox(nutritionBox, 'Nutrition')}
