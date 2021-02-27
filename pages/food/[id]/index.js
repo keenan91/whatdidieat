@@ -607,7 +607,14 @@ export default function Home({id}) {
         <Text align="center" pb="30px"></Text>
 
         {/* <BrowserView> */}
-        <SimpleGrid w={['80%']} m="auto" columns={[1, 1, 2, 2, 3]} spacing={10}>
+        <SimpleGrid
+          w={['95%', '80%']}
+          m="auto"
+          pl="0"
+          pr="0"
+          columns={[1, 1, 2, 2, 3]}
+          spacing={[10]}
+        >
           {createBox(vitaminBox, 'Vitamin')}
           {createBox(nutritionBox, 'Nutrition')}
           {createBox(mineralBox, 'Mineral')}
@@ -651,7 +658,6 @@ export default function Home({id}) {
           {globalStyles}
         </style>
       </Box>
-      tex
     </ChakraProvider>
   )
 }
